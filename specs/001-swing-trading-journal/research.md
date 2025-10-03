@@ -1,7 +1,7 @@
 # Research: Swing Trading Journal App
 
-**Feature**: 001-swing-trading-journal  
-**Date**: 2025-10-03  
+**Feature**: 001-swing-trading-journal
+**Date**: 2025-10-03
 **Purpose**: Research and decision documentation for technology choices and architectural patterns
 
 ---
@@ -286,7 +286,7 @@ connectionString = $"Data Source={dbPath};Password={userPassword};"
 - Service layer business logic
 - ViewModel command handlers
 
-**Tools**: xUnit, FluentAssertions, Moq for mocking
+**Tools**: xUnit, Microsoft core Assertions, NSubstitute for mocking
 
 ### 2. Integration Tests
 
@@ -349,5 +349,5 @@ No major risks or blockers identified. All dependencies are mature, well-documen
 
 ---
 
-**Status**: Research complete ✅  
+**Status**: Research complete ✅
 **Next Phase**: Phase 1 (Design & Contracts)

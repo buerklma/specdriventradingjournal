@@ -1,7 +1,7 @@
 # Tasks: Swing Trading Journal App
 
-**Feature**: 001-swing-trading-journal  
-**Input**: Design documents from `/specs/001-swing-trading-journal/`  
+**Feature**: 001-swing-trading-journal
+**Input**: Design documents from `/specs/001-swing-trading-journal/`
 **Prerequisites**: plan.md ✅, research.md ✅, data-model.md ✅, contracts/ ✅, quickstart.md ✅
 
 ---
@@ -9,58 +9,58 @@
 ## Phase 3.1: Setup & Infrastructure
 
 ### Project Structure
-- [ ] **T001** Create solution structure: `src/TradingJournal/`, `src/TradingJournal.Core/`, `tests/TradingJournal.UnitTests/`, `tests/TradingJournal.IntegrationTests/`
-- [ ] **T002** Initialize .NET MAUI Windows Desktop project with .NET 8.0 SDK targeting `net8.0-windows10.0.19041.0`
-- [ ] **T003** [P] Create folder structure: `Models/`, `ViewModels/`, `Views/`, `Services/`, `Data/`, `Helpers/`, `Resources/`, `Platforms/Windows/` in `src/TradingJournal/`
-- [ ] **T004** [P] Create Core library structure: `Calculations/`, `Validators/` in `src/TradingJournal.Core/`
+- [] **T001** Create solution structure: `src/TradingJournal/`, `src/TradingJournal.Core/`, `tests/TradingJournal.UnitTests/`, `tests/TradingJournal.IntegrationTests/`
+- [x] **T002** Initialize .NET MAUI Windows Desktop project with .NET 8.0 SDK targeting `net8.0-windows10.0.19041.0`
+- [x] **T003** [P] Create folder structure: `Models/`, `ViewModels/`, `Views/`, `Services/`, `Data/`, `Helpers/`, `Resources/`, `Platforms/Windows/` in `src/TradingJournal/`
+- [x] **T004** [P] Create Core library structure: `Calculations/`, `Validators/` in `src/TradingJournal.Core/`
 
 ### Dependencies & Configuration
-- [ ] **T005** [P] Install NuGet packages: `Microsoft.EntityFrameworkCore.Sqlite` (v8.0.0), `Microsoft.EntityFrameworkCore.Design`, `Microsoft.EntityFrameworkCore.Tools` in TradingJournal project
-- [ ] **T006** [P] Install testing packages: `xUnit` (v2.6.2), `FluentAssertions` (v6.12.0), `Moq` (v4.20.0), `Microsoft.EntityFrameworkCore.InMemory` in test projects
-- [ ] **T007** [P] Install Syncfusion MAUI Charts: `Syncfusion.Maui.Charts` (v24.1.41, Community License) in TradingJournal project
-- [ ] **T008** [P] Install QuestPDF: `QuestPDF` (v2023.12.3) for PDF generation in TradingJournal project
-- [ ] **T009** [P] Install CommunityToolkit packages: `CommunityToolkit.Mvvm` (v8.2.2), `CommunityToolkit.Maui` (v7.0.0) in TradingJournal project
+- [x] **T005** [P] Install NuGet packages: `Microsoft.EntityFrameworkCore.Sqlite` (v8.0.0), `Microsoft.EntityFrameworkCore.Design`, `Microsoft.EntityFrameworkCore.Tools` in TradingJournal project
+- [x] **T006** [P] Install testing packages: `xUnit` (v2.6.2) using core `Assert`, `NSubstitute` (v5.0.0), `Microsoft.EntityFrameworkCore.InMemory` in test projects
+- [x] **T007** [P] Install Syncfusion MAUI Charts: `Syncfusion.Maui.Charts` (v24.1.41, Community License) in TradingJournal project
+- [x] **T008** [P] Install QuestPDF: `QuestPDF` (v2023.12.3) for PDF generation in TradingJournal project
+- [x] **T009** [P] Install CommunityToolkit packages: `CommunityToolkit.Mvvm` (v8.2.2), `CommunityToolkit.Maui` (v7.0.0) in TradingJournal project
 
 ### Quality Gates & Tooling
-- [ ] **T010** [P] Configure `.editorconfig` with C# formatting rules: 4-space indents, `var` preferences, brace placement, naming conventions
-- [ ] **T011** [P] Setup StyleCop.Analyzers: Install `StyleCop.Analyzers` NuGet, create `stylecop.json` with rule customizations (disable SA1633 file headers)
-- [ ] **T012** [P] Configure `Directory.Build.props`: Enable nullable reference types, warnings as errors, TreatWarningsAsErrors=true, Code Analysis level 8
-- [ ] **T013** [P] Create `.gitignore` additions: `*.db`, `*.db-shm`, `*.db-wal`, `bin/`, `obj/`, `*.user`, `.vs/`, `Screenshots/`
+- [x] **T010** [P] Configure `.editorconfig` with C# formatting rules: 4-space indents, `var` preferences, brace placement, naming conventions
+- [x] **T011** [P] Setup StyleCop.Analyzers: Install `StyleCop.Analyzers` NuGet, create `stylecop.json` with rule customizations (disable SA1633 file headers)
+- [x] **T012** [P] Configure `Directory.Build.props`: Enable nullable reference types, warnings as errors, TreatWarningsAsErrors=true, Code Analysis level 8
+- [x] **T013** [P] Create `.gitignore` additions: `*.db`, `*.db-shm`, `*.db-wal`, `bin/`, `obj/`, `*.user`, `.vs/`, `Screenshots/`
 
 ---
 
 ## Phase 3.2: Tests First - Data Layer (TDD) ⚠️ MUST COMPLETE BEFORE PHASE 3.3
 
 ### Entity Tests
-- [ ] **T014** [P] Entity test: `TradeTests.cs` in `tests/TradingJournal.UnitTests/Models/` - Test Trade entity instantiation, property setters, validation attributes
-- [ ] **T015** [P] Entity test: `TradeBusinessRulesTests.cs` - Test Long direction rules (StopLoss < EntryPrice < TakeProfit), Short direction rules, ExitDateTime > EntryDateTime validation
-- [ ] **T016** [P] Entity test: `ManagementAdjustmentTests.cs` - Test adjustment entity, foreign key relationship, AdjustmentType enum validation
-- [ ] **T017** [P] Entity test: `AttachmentTests.cs` - Test attachment entity, file size validation (< 10MB), allowed file types (.png, .jpg, .pdf, .txt)
-- [ ] **T018** [P] Entity test: `StrategyCategoryTests.cs` - Test category entity, unique name constraint, IsSystemDefined logic
-- [ ] **T019** [P] Entity test: `UserPreferencesTests.cs` - Test singleton pattern, Theme enum, default values, CustomFieldDefinitions JSON validation
+ [x] **T014** [P] Entity test: `TradeTests.cs` in `tests/TradingJournal.UnitTests/Models/` - Test Trade entity instantiation, property setters, validation attributes
+ [x] **T015** [P] Entity test: `TradeBusinessRulesTests.cs` - Test Long direction rules (StopLoss < EntryPrice < TakeProfit), Short direction rules, ExitDateTime > EntryDateTime validation
+ [x] **T016** [P] Entity test: `ManagementAdjustmentTests.cs` - Test adjustment entity, foreign key relationship, AdjustmentType enum validation
+ [x] **T017** [P] Entity test: `AttachmentTests.cs` - Test attachment entity, file size validation (< 10MB), allowed file types (.png, .jpg, .pdf, .txt)
+ [x] **T018** [P] Entity test: `StrategyCategoryTests.cs` - Test category entity, unique name constraint, IsSystemDefined logic
+ [x] **T019** [P] Entity test: `UserPreferencesTests.cs` - Test singleton pattern, Theme enum, default values, CustomFieldDefinitions JSON validation
 
 ### Calculation Tests
-- [ ] **T020** [P] Calculation test: `RiskRewardCalculatorTests.cs` in `tests/TradingJournal.UnitTests/Calculations/` - Test PlannedRR for Long trades: (TP - Entry) / (Entry - SL)
-- [ ] **T021** [P] Calculation test: `RiskRewardCalculatorTests_Short.cs` - Test PlannedRR for Short trades: (Entry - TP) / (SL - Entry)
-- [ ] **T022** [P] Calculation test: `RiskRewardCalculatorTests_Realized.cs` - Test RealizedRR with ExitPrice for wins, losses, break-even scenarios
-- [ ] **T023** [P] Calculation test: `ProfitLossCalculatorTests.cs` - Test P/L in currency: (ExitPrice - EntryPrice) * PositionSize for Long, inverse for Short
-- [ ] **T024** [P] Calculation test: `ProfitLossInRCalculatorTests.cs` - Test P/L in R units: ProfitLossCurrency / RiskAmount
-- [ ] **T025** [P] Calculation test: `HoldingTimeCalculatorTests.cs` - Test TimeSpan calculation: ExitDateTime - EntryDateTime
+ [x] **T020** [P] Calculation test: `RiskRewardCalculatorTests.cs` in `tests/TradingJournal.UnitTests/Calculations/` - Test PlannedRR for Long trades: (TP - Entry) / (Entry - SL)
+ [x] **T021** [P] Calculation test: `RiskRewardCalculatorTests_Short.cs` - Test PlannedRR for Short trades: (Entry - TP) / (SL - Entry)
+ [x] **T022** [P] Calculation test: `RiskRewardCalculatorTests_Realized.cs` - Test RealizedRR with ExitPrice for wins, losses, break-even scenarios
+ [x] **T023** [P] Calculation test: `ProfitLossCalculatorTests.cs` - Test P/L in currency: (ExitPrice - EntryPrice) * PositionSize for Long, inverse for Short
+ [x] **T024** [P] Calculation test: `ProfitLossInRCalculatorTests.cs` - Test P/L in R units: ProfitLossCurrency / RiskAmount
+ [x] **T025** [P] Calculation test: `HoldingTimeCalculatorTests.cs` - Test TimeSpan calculation: ExitDateTime - EntryDateTime
 
 ### Validation Tests
-- [ ] **T026** [P] Validation test: `TradeValidatorTests.cs` in `tests/TradingJournal.UnitTests/Validators/` - Test Symbol required and max 20 chars, prices > 0, RiskPercentage 0.1-100 range
-- [ ] **T027** [P] Validation test: `TradeValidatorTests_CrossField.cs` - Test ExitDateTime > EntryDateTime, DisciplineScore 1-10 if set, QualityRating 1-10 if set
-- [ ] **T028** [P] Validation test: `AttachmentValidatorTests.cs` - Test file size < 10MB, file type in allowed list, storage path format validation
+- [x] **T026** [P] Validation test: `TradeValidatorTests.cs` in `tests/TradingJournal.UnitTests/Validators/` - Test Symbol required and max 20 chars, prices > 0, RiskPercentage 0.1-100 range
+- [x] **T027** [P] Validation test: `TradeValidatorTests_CrossField.cs` - Test ExitDateTime > EntryDateTime, DisciplineScore 1-10 if set, QualityRating 1-10 if set
+- [x] **T028** [P] Validation test: `AttachmentValidatorTests.cs` - Test file size < 10MB, file type in allowed list, storage path format validation
 
 ### DbContext Tests
-- [ ] **T029** [P] DbContext test: `TradingDbContextTests.cs` in `tests/TradingJournal.IntegrationTests/Data/` - Test DbContext instantiation with SQLite in-memory, DbSet properties exist
-- [ ] **T030** [P] DbContext test: `TradingDbContextConfigurationTests.cs` - Test entity configurations: indexes on Trade.Symbol, Trade.EntryDateTime, Trade.SetupType, composite index
-- [ ] **T031** [P] DbContext test: `RelationshipTests.cs` - Test 1:N Trade→ManagementAdjustment navigation, 1:N Trade→Attachment navigation, cascade delete behavior
-- [ ] **T032** [P] DbContext test: `SeedDataTests.cs` - Test default StrategyCategory records seeded (Breakout, Pullback, Reversal, Trend Continuation), UserPreferences singleton created
+- [x] **T029** [P] DbContext test: `TradingDbContextTests.cs` in `tests/TradingJournal.IntegrationTests/Data/` - Test DbContext instantiation with SQLite in-memory, DbSet properties exist
+- [x] **T030** [P] DbContext test: `TradingDbContextConfigurationTests.cs` - Test entity configurations: indexes on Trade.Symbol, Trade.EntryDateTime, Trade.SetupType, composite index
+- [x] **T031** [P] DbContext test: `RelationshipTests.cs` - Test 1:N Trade→ManagementAdjustment navigation, 1:N Trade→Attachment navigation, cascade delete behavior
+- [x] **T032** [P] DbContext test: `SeedDataTests.cs` - Test default StrategyCategory records seeded (Breakout, Pullback, Reversal, Trend Continuation), UserPreferences singleton created
 
 ### Migration Tests
-- [ ] **T033** [P] Migration test: `InitialMigrationTests.cs` - Test migration creates all tables: Trades, ManagementAdjustments, Attachments, StrategyCategories, UserPreferences
-- [ ] **T034** [P] Migration test: `IndexCreationTests.cs` - Test all indexes created: IX_Trade_Symbol, IX_Trade_EntryDateTime, IX_Trade_SetupType, IX_Trade_Symbol_EntryDateTime
+- [x] **T033** [P] Migration test: `InitialMigrationTests.cs` - Test migration creates all tables: Trades, ManagementAdjustments, Attachments, StrategyCategories, UserPreferences
+- [x] **T034** [P] Migration test: `IndexCreationTests.cs` - Test all indexes created: IX_Trade_Symbol, IX_Trade_EntryDateTime, IX_Trade_SetupType, IX_Trade_Symbol_EntryDateTime
 
 ---
 
@@ -544,7 +544,7 @@ Before marking this task list complete, verify:
 
 ---
 
-**Status**: Task breakdown complete ✅  
-**Next Phase**: Implementation execution (manually or via automation tools)  
-**Constitution Compliance**: All 5 principles honored ✅  
+**Status**: Task breakdown complete ✅
+**Next Phase**: Implementation execution (manually or via automation tools)
+**Constitution Compliance**: All 5 principles honored ✅
 **Milestone Validation**: User-testable procedures defined ✅

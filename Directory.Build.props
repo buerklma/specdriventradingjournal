@@ -1,0 +1,10 @@
+<Project>
+  <PropertyGroup>
+    <!-- Enable nullable reference types across all projects -->
+    <Nullable>enable</Nullable>
+    <!-- Treat all warnings as errors -->
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <!-- Enable latest code analysis rules; specify analysis level 8 for .NET analyzer -->
+    <AnalysisLevel>8.0</AnalysisLevel>
+  </PropertyGroup>
+</Project>

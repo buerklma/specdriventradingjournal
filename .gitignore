@@ -24,6 +24,8 @@ dist/
 build/
 *.egg-info/
 target/
+bin/
+obj/
 
 # Environment variables
 .env
@@ -37,6 +39,8 @@ logs/
 *.db
 *.sqlite
 *.sqlite3
+*.db-shm
+*.db-wal
 
 # Testing
 .coverage
@@ -48,3 +52,10 @@ coverage/
 tmp/
 temp/
 *.tmp
+
+# User-specific files
+*.user
+.vs/
+
+# TradingJournal screenshots
+Screenshots/
