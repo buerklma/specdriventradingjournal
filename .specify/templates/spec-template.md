@@ -100,6 +100,13 @@ When creating this spec from a user prompt:
 - [ ] Scope is clearly bounded
 - [ ] Dependencies and assumptions identified
 
+### Constitutional Alignment
+- [ ] User experience requirements include consistency guidelines
+- [ ] Performance requirements specify measurable targets
+- [ ] Quality standards clearly defined for feature scope
+- [ ] Test scenarios comprehensive and user-focused
+- [ ] Milestone acceptance criteria include user-testable procedures
+
 ---
 
 ## Execution Status

@@ -47,7 +47,14 @@
 ## Constitution Check
 *GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.*
 
-[Gates determined based on constitution file]
+- [ ] **Code Quality Assurance**: Plan includes linting, formatting, static analysis setup
+- [ ] **Test-First Development**: Contract tests and integration tests planned before implementation  
+- [ ] **UX Consistency**: UI design system and interaction patterns defined for user-facing features
+- [ ] **Performance Requirements**: Performance benchmarks (<200ms API, 60fps UI) planned for relevant features
+- [ ] **Specification-Driven Development**: Feature specification complete with user scenarios and acceptance criteria
+- [ ] **Milestone Testability**: Milestones include user-testable scenarios and acceptance procedures
+
+*Document any violations below with justification in Complexity Tracking section*
 
 ## Project Structure
 
@@ -216,4 +223,4 @@ directories captured above]
 - [ ] Complexity deviations documented
 
 ---
-*Based on Constitution v2.1.1 - See `/memory/constitution.md`*
+*Based on Constitution v1.0.1 - See `/memory/constitution.md`*
