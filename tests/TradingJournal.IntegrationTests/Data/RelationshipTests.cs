@@ -2,7 +2,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Xunit;
 using TradingJournal.Data;
-using TradingJournal.Models;
+using TradingJournal.Data.Models;
 
 namespace TradingJournal.IntegrationTests.Data
 {

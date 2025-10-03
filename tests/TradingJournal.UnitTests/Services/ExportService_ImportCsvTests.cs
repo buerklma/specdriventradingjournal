@@ -5,6 +5,7 @@
 namespace TradingJournal.UnitTests.Services;
 
 using FluentAssertions;
+using TradingJournal.Core.Models;
 using Xunit;
 
 /// <summary>

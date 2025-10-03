@@ -50,6 +50,26 @@ public class TradeFilter
     public bool? IsProfitable { get; set; }
 
     /// <summary>
+    /// Minimum profit/loss in currency.
+    /// </summary>
+    public decimal? MinProfitLoss { get; set; }
+
+    /// <summary>
+    /// Maximum profit/loss in currency.
+    /// </summary>
+    public decimal? MaxProfitLoss { get; set; }
+
+    /// <summary>
+    /// Minimum realized R-ratio.
+    /// </summary>
+    public decimal? MinRRRatio { get; set; }
+
+    /// <summary>
+    /// Maximum realized R-ratio.
+    /// </summary>
+    public decimal? MaxRRRatio { get; set; }
+
+    /// <summary>
     /// Checks if any filter criteria is set.
     /// </summary>
     public bool HasFilters =>
@@ -59,5 +79,9 @@ public class TradeFilter
         !string.IsNullOrEmpty(SetupType) ||
         Direction.HasValue ||
         IsOpen.HasValue ||
-        IsProfitable.HasValue;
+        IsProfitable.HasValue ||
+        MinProfitLoss.HasValue ||
+        MaxProfitLoss.HasValue ||
+        MinRRRatio.HasValue ||
+        MaxRRRatio.HasValue;
 }
