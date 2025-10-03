@@ -11,7 +11,9 @@
 
   <ItemGroup>
   <!-- Reference main projects for models/entities and core calculations -->
-  <ProjectReference Include="..\..\src\TradingJournal\TradingJournal.csproj" />
+  <!-- Replace MAUI app reference with data layer for models -->
+  <PackageReference Include="FluentAssertions" Version="8.7.1" />
+  <ProjectReference Include="..\..\src\TradingJournal.Data\TradingJournal.Data.csproj" />
   <ProjectReference Include="..\..\src\TradingJournal.Core\TradingJournal.Core.csproj" />
     <PackageReference Include="coverlet.collector" Version="6.0.2" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="8.0.0" />

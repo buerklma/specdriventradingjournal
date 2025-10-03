@@ -9,7 +9,7 @@
 ## Phase 3.1: Setup & Infrastructure
 
 ### Project Structure
-- [] **T001** Create solution structure: `src/TradingJournal/`, `src/TradingJournal.Core/`, `tests/TradingJournal.UnitTests/`, `tests/TradingJournal.IntegrationTests/`
+- [x] **T001** Create solution structure: `src/TradingJournal/`, `src/TradingJournal.Core/`, `tests/TradingJournal.UnitTests/`, `tests/TradingJournal.IntegrationTests/`
 - [x] **T002** Initialize .NET MAUI Windows Desktop project with .NET 8.0 SDK targeting `net8.0-windows10.0.19041.0`
 - [x] **T003** [P] Create folder structure: `Models/`, `ViewModels/`, `Views/`, `Services/`, `Data/`, `Helpers/`, `Resources/`, `Platforms/Windows/` in `src/TradingJournal/`
 - [x] **T004** [P] Create Core library structure: `Calculations/`, `Validators/` in `src/TradingJournal.Core/`
@@ -67,52 +67,52 @@
 ## Phase 3.3: Tests First - Service Layer (TDD) ⚠️ MUST COMPLETE BEFORE PHASE 3.4
 
 ### ITradeService Contract Tests
-- [ ] **T035** [P] Contract test: `TradeService_CreateTests.cs` in `tests/TradingJournal.UnitTests/Services/` - Test CreateTradeAsync generates Id, sets timestamps, calculates PlannedRR
-- [ ] **T036** [P] Contract test: `TradeService_CreateValidationTests.cs` - Test CreateTradeAsync throws ValidationException for: empty Symbol, negative prices, invalid RiskPercentage
-- [ ] **T037** [P] Contract test: `TradeService_GetByIdTests.cs` - Test GetTradeByIdAsync returns trade with navigation properties loaded, returns null for non-existent Id
-- [ ] **T038** [P] Contract test: `TradeService_GetAllTests.cs` - Test GetAllTradesAsync returns all trades, ordered by EntryDateTime descending
-- [ ] **T039** [P] Contract test: `TradeService_GetBySymbolTests.cs` - Test GetTradesBySymbolAsync filters correctly, case-insensitive symbol matching
-- [ ] **T040** [P] Contract test: `TradeService_GetByDateRangeTests.cs` - Test GetTradesByDateRangeAsync filters by EntryDateTime within range, inclusive bounds
-- [ ] **T041** [P] Contract test: `TradeService_GetPagedTests.cs` - Test GetTradesPagedAsync returns correct page size, calculates TotalPages correctly, HasNextPage/HasPreviousPage flags
-- [ ] **T042** [P] Contract test: `TradeService_GetPagedFilterTests.cs` - Test GetTradesPagedAsync with TradeFilter: Symbol, DateRange, SetupType, Direction, IsOpen, IsProfitable filters
-- [ ] **T043** [P] Contract test: `TradeService_UpdateTests.cs` - Test UpdateTradeAsync updates properties, updates UpdatedAt timestamp, returns updated trade
-- [ ] **T044** [P] Contract test: `TradeService_UpdateExitTests.cs` - Test UpdateTradeExitAsync sets ExitPrice/ExitDateTime, calculates RealizedRR, ProfitLossCurrency, ProfitLossR, HoldingTime
-- [ ] **T045** [P] Contract test: `TradeService_DeleteTests.cs` - Test DeleteTradeAsync removes trade, returns false for non-existent Id, cascade deletes adjustments and attachments
-- [ ] **T046** [P] Contract test: `TradeService_AddAdjustmentTests.cs` - Test AddAdjustmentAsync creates adjustment linked to trade, generates Id, validates adjustment datetime within trade lifetime
-- [ ] **T047** [P] Contract test: `TradeService_GetAdjustmentsTests.cs` - Test GetAdjustmentsForTradeAsync returns all adjustments for trade, ordered by AdjustmentDateTime
-- [ ] **T048** [P] Contract test: `TradeService_AddAttachmentTests.cs` - Test AddAttachmentAsync copies file to storage, creates attachment record, populates FileSize/FileType
-- [ ] **T049** [P] Contract test: `TradeService_GetAttachmentsTests.cs` - Test GetAttachmentsForTradeAsync returns all attachments, ordered by UploadedAt
-- [ ] **T050** [P] Contract test: `TradeService_DeleteAttachmentTests.cs` - Test DeleteAttachmentAsync removes file from storage and database record
+- [x] **T035** [P] Contract test: `TradeService_CreateTests.cs` in `tests/TradingJournal.UnitTests/Services/` - Test CreateTradeAsync generates Id, sets timestamps, calculates PlannedRR
+- [x] **T036** [P] Contract test: `TradeService_CreateValidationTests.cs` - Test CreateTradeAsync throws ValidationException for: empty Symbol, negative prices, invalid RiskPercentage
+- [x] **T037** [P] Contract test: `TradeService_GetByIdTests.cs` - Test GetTradeByIdAsync returns trade with navigation properties loaded, returns null for non-existent Id
+- [x] **T038** [P] Contract test: `TradeService_GetAllTests.cs` - Test GetAllTradesAsync returns all trades, ordered by EntryDateTime descending
+- [x] **T039** [P] Contract test: `TradeService_GetBySymbolTests.cs` - Test GetTradesBySymbolAsync filters correctly, case-insensitive symbol matching
+- [x] **T040** [P] Contract test: `TradeService_GetByDateRangeTests.cs` - Test GetTradesByDateRangeAsync filters by EntryDateTime within range, inclusive bounds
+- [x] **T041** [P] Contract test: `TradeService_GetPagedTests.cs` - Test GetTradesPagedAsync returns correct page size, calculates TotalPages correctly, HasNextPage/HasPreviousPage flags
+- [x] **T042** [P] Contract test: `TradeService_GetPagedFilterTests.cs` - Test GetTradesPagedAsync with TradeFilter: Symbol, DateRange, SetupType, Direction, IsOpen, IsProfitable filters
+- [x] **T043** [P] Contract test: `TradeService_UpdateTests.cs` - Test UpdateTradeAsync updates properties, updates UpdatedAt timestamp, returns updated trade
+- [x] **T044** [P] Contract test: `TradeService_UpdateExitTests.cs` - Test UpdateTradeExitAsync sets ExitPrice/ExitDateTime, calculates RealizedRR, ProfitLossCurrency, ProfitLossR, HoldingTime
+- [x] **T045** [P] Contract test: `TradeService_DeleteTests.cs` - Test DeleteTradeAsync removes trade, returns false for non-existent Id, cascade deletes adjustments and attachments
+- [x] **T046** [P] Contract test: `TradeService_AddAdjustmentTests.cs` - Test AddAdjustmentAsync creates adjustment linked to trade, generates Id, validates adjustment datetime within trade lifetime
+- [x] **T047** [P] Contract test: `TradeService_GetAdjustmentsTests.cs` - Test GetAdjustmentsForTradeAsync returns all adjustments for trade, ordered by AdjustmentDateTime
+- [x] **T048** [P] Contract test: `TradeService_AddAttachmentTests.cs` - Test AddAttachmentAsync copies file to storage, creates attachment record, populates FileSize/FileType
+- [x] **T049** [P] Contract test: `TradeService_GetAttachmentsTests.cs` - Test GetAttachmentsForTradeAsync returns all attachments, ordered by UploadedAt
+- [x] **T050** [P] Contract test: `TradeService_DeleteAttachmentTests.cs` - Test DeleteAttachmentAsync removes file from storage and database record
 
 ### IAnalyticsService Contract Tests
-- [ ] **T051** [P] Contract test: `AnalyticsService_OverallStatisticsTests.cs` in `tests/TradingJournal.UnitTests/Services/` - Test GetOverallStatisticsAsync calculates TotalTrades, WinningTrades, LosingTrades, WinRate correctly
-- [ ] **T052** [P] Contract test: `AnalyticsService_StatisticsBySetupTests.cs` - Test GetStatisticsBySetupTypeAsync filters by SetupType, calculates statistics only for matching trades
-- [ ] **T053** [P] Contract test: `AnalyticsService_StatisticsBySymbolTests.cs` - Test GetStatisticsBySymbolAsync filters by Symbol, includes case-insensitive matching
-- [ ] **T054** [P] Contract test: `AnalyticsService_WinRateTests.cs` - Test CalculateWinRateAsync formula: (WinningTrades / TotalTrades) * 100, returns 0 for no trades
-- [ ] **T055** [P] Contract test: `AnalyticsService_AverageRRTests.cs` - Test CalculateAverageRRRatioAsync sums RealizedRR and divides by trade count, excludes open trades
-- [ ] **T056** [P] Contract test: `AnalyticsService_ProfitFactorTests.cs` - Test CalculateProfitFactorAsync: GrossProfit / GrossLoss, returns 0 if no losses, handles edge cases
-- [ ] **T057** [P] Contract test: `AnalyticsService_MaxDrawdownTests.cs` - Test CalculateMaxDrawdownAsync builds equity curve, finds peak-to-trough difference, calculates percentage
-- [ ] **T058** [P] Contract test: `AnalyticsService_EquityCurveTests.cs` - Test GetEquityCurveDataAsync returns points ordered by date, cumulative P/L calculated correctly
-- [ ] **T059** [P] Contract test: `AnalyticsService_RRDistributionTests.cs` - Test GetRRDistributionDataAsync buckets trades by RealizedRR: <-5, -5 to -4, ..., 4 to 5, >5
-- [ ] **T060** [P] Contract test: `AnalyticsService_PerformanceBySetupTests.cs` - Test GetPerformanceBySetupDataAsync groups by SetupType, aggregates stats, orders by profitability
-- [ ] **T061** [P] Contract test: `AnalyticsService_MonthlyPerformanceTests.cs` - Test GetMonthlyPerformanceDataAsync groups by month, calculates P/L per month for given year
-- [ ] **T062** [P] Contract test: `AnalyticsService_EmotionFrequencyTests.cs` - Test GetEmotionFrequencyAsync counts unique emotions for Entry/During/Exit stages
-- [ ] **T063** [P] Contract test: `AnalyticsService_DisciplineScoreTests.cs` - Test GetAverageDisciplineScoreAsync averages DisciplineScore field, excludes null values
-- [ ] **T064** [P] Contract test: `AnalyticsService_DisciplineCorrelationTests.cs` - Test AnalyzeDisciplineCorrelationAsync groups by DisciplineScore 1-10, calculates avg RR and win rate per level
-- [ ] **T065** [P] Contract test: `AnalyticsService_MistakesTests.cs` - Test GetTopMistakesAsync parses Mistakes field, counts frequency, returns top N
-- [ ] **T066** [P] Contract test: `AnalyticsService_LessonsTests.cs` - Test GetTopLessonsAsync parses LessonsLearned field, counts frequency, returns top N
+- [x] **T051** [P] Contract test: `AnalyticsService_OverallStatisticsTests.cs` in `tests/TradingJournal.UnitTests/Services/` - Test GetOverallStatisticsAsync calculates TotalTrades, WinningTrades, LosingTrades, WinRate correctly
+- [x] **T052** [P] Contract test: `AnalyticsService_StatisticsBySetupTests.cs` - Test GetStatisticsBySetupTypeAsync filters by SetupType, calculates statistics only for matching trades
+- [x] **T053** [P] Contract test: `AnalyticsService_StatisticsBySymbolTests.cs` - Test GetStatisticsBySymbolAsync filters by Symbol, includes case-insensitive matching
+- [x] **T054** [P] Contract test: `AnalyticsService_WinRateTests.cs` - Test CalculateWinRateAsync formula: (WinningTrades / TotalTrades) * 100, returns 0 for no trades
+- [x] **T055** [P] Contract test: `AnalyticsService_AverageRRTests.cs` - Test CalculateAverageRRRatioAsync sums RealizedRR and divides by trade count, excludes open trades
+- [x] **T056** [P] Contract test: `AnalyticsService_ProfitFactorTests.cs` - Test CalculateProfitFactorAsync: GrossProfit / GrossLoss, returns 0 if no losses, handles edge cases
+- [x] **T057** [P] Contract test: `AnalyticsService_MaxDrawdownTests.cs` - Test CalculateMaxDrawdownAsync builds equity curve, finds peak-to-trough difference, calculates percentage
+- [x] **T058** [P] Contract test: `AnalyticsService_EquityCurveTests.cs` - Test GetEquityCurveDataAsync returns points ordered by date, cumulative P/L calculated correctly
+- [x] **T059** [P] Contract test: `AnalyticsService_RRDistributionTests.cs` - Test GetRRDistributionDataAsync buckets trades by RealizedRR: <-5, -5 to -4, ..., 4 to 5, >5
+- [x] **T060** [P] Contract test: `AnalyticsService_PerformanceBySetupTests.cs` - Test GetPerformanceBySetupDataAsync groups by SetupType, aggregates stats, orders by profitability
+- [x] **T061** [P] Contract test: `AnalyticsService_MonthlyPerformanceTests.cs` - Test GetMonthlyPerformanceDataAsync groups by month, calculates P/L per month for given year
+- [x] **T062** [P] Contract test: `AnalyticsService_EmotionFrequencyTests.cs` - Test GetEmotionFrequencyAsync counts unique emotions for Entry/During/Exit stages
+- [x] **T063** [P] Contract test: `AnalyticsService_DisciplineScoreTests.cs` - Test GetAverageDisciplineScoreAsync averages DisciplineScore field, excludes null values
+- [x] **T064** [P] Contract test: `AnalyticsService_DisciplineCorrelationTests.cs` - Test AnalyzeDisciplineCorrelationAsync groups by DisciplineScore 1-10, calculates avg RR and win rate per level
+- [x] **T065** [P] Contract test: `AnalyticsService_MistakesTests.cs` - Test GetTopMistakesAsync parses Mistakes field, counts frequency, returns top N
+- [x] **T066** [P] Contract test: `AnalyticsService_LessonsTests.cs` - Test GetTopLessonsAsync parses LessonsLearned field, counts frequency, returns top N
 
 ### IExportService Contract Tests
-- [ ] **T067** [P] Contract test: `ExportService_CsvTests.cs` in `tests/TradingJournal.UnitTests/Services/` - Test ExportToCsvAsync creates file at outputPath, includes header row, escapes comma/quotes in data
-- [ ] **T068** [P] Contract test: `ExportService_ExcelTests.cs` - Test ExportToExcelAsync creates .xlsx file, multiple sheets (Trades, Summary), conditional formatting (green profits, red losses)
-- [ ] **T069** [P] Contract test: `ExportService_ExcelChartsTests.cs` - Test ExportToExcelAsync with includeCharts=true adds Charts sheet with embedded equity curve and R/R distribution
-- [ ] **T070** [P] Contract test: `ExportService_PdfTests.cs` - Test ExportToPdfAsync creates PDF with cover page, summary page, charts, recent trades table, file size < 5MB
-- [ ] **T071** [P] Contract test: `ExportService_BackupTests.cs` - Test CreateBackupAsync creates ZIP file, contains tradingjournal.db, Screenshots folder, backup-info.json
-- [ ] **T072** [P] Contract test: `ExportService_BackupNamingTests.cs` - Test CreateBackupAsync generates filename: TradingJournal_Backup_YYYY-MM-DD_HHMMSS.zip
-- [ ] **T073** [P] Contract test: `ExportService_RestoreTests.cs` - Test RestoreFromBackupAsync extracts ZIP, replaces database file, restores Screenshots folder
-- [ ] **T074** [P] Contract test: `ExportService_RestoreValidationTests.cs` - Test RestoreFromBackupAsync throws InvalidBackupException for corrupted ZIP, throws InvalidOperationException if overwriteExisting=false and data exists
-- [ ] **T075** [P] Contract test: `ExportService_ImportCsvTests.cs` - Test ImportFromCsvAsync maps columns via CsvMappingProfile, creates Trade records, returns ImportResult with counts
-- [ ] **T076** [P] Contract test: `ExportService_ImportValidationTests.cs` - Test ImportFromCsvAsync skips invalid rows, populates Errors list in ImportResult, does not throw on malformed data
+- [x] **T067** [P] Contract test: `ExportService_CsvTests.cs` in `tests/TradingJournal.UnitTests/Services/` - Test ExportToCsvAsync creates file at outputPath, includes header row, escapes comma/quotes in data
+- [x] **T068** [P] Contract test: `ExportService_ExcelTests.cs` - Test ExportToExcelAsync creates .xlsx file, multiple sheets (Trades, Summary), conditional formatting (green profits, red losses)
+- [x] **T069** [P] Contract test: `ExportService_ExcelChartsTests.cs` - Test ExportToExcelAsync with includeCharts=true adds Charts sheet with embedded equity curve and R/R distribution
+- [x] **T070** [P] Contract test: `ExportService_PdfTests.cs` - Test ExportToPdfAsync creates PDF with cover page, summary page, charts, recent trades table, file size < 5MB
+- [x] **T071** [P] Contract test: `ExportService_BackupTests.cs` - Test CreateBackupAsync creates ZIP file, contains tradingjournal.db, Screenshots folder, backup-info.json
+- [x] **T072** [P] Contract test: `ExportService_BackupNamingTests.cs` - Test CreateBackupAsync generates filename: TradingJournal_Backup_YYYY-MM-DD_HHMMSS.zip
+- [x] **T073** [P] Contract test: `ExportService_RestoreTests.cs` - Test RestoreFromBackupAsync extracts ZIP, replaces database file, restores Screenshots folder
+- [x] **T074** [P] Contract test: `ExportService_RestoreValidationTests.cs` - Test RestoreFromBackupAsync throws InvalidBackupException for corrupted ZIP, throws InvalidOperationException if overwriteExisting=false and data exists
+- [x] **T075** [P] Contract test: `ExportService_ImportCsvTests.cs` - Test ImportFromCsvAsync maps columns via CsvMappingProfile, creates Trade records, returns ImportResult with counts
+- [x] **T076** [P] Contract test: `ExportService_ImportValidationTests.cs` - Test ImportFromCsvAsync skips invalid rows, populates Errors list in ImportResult, does not throw on malformed data
 
 ---
 
@@ -137,32 +137,32 @@
 ## Phase 3.5: Core Implementation - Data Layer (ONLY after tests are failing)
 
 ### Entity Implementations
-- [ ] **T087** [P] Implement Trade entity in `src/TradingJournal/Models/Trade.cs` with all 35+ properties, TradeDirection enum, navigation properties (Adjustments, Attachments)
-- [ ] **T088** [P] Implement ManagementAdjustment entity in `src/TradingJournal/Models/ManagementAdjustment.cs` with AdjustmentType enum, foreign key to Trade
-- [ ] **T089** [P] Implement Attachment entity in `src/TradingJournal/Models/Attachment.cs` with file metadata properties, StoragePath, Caption
-- [ ] **T090** [P] Implement StrategyCategory entity in `src/TradingJournal/Models/StrategyCategory.cs` with Name, ColorHex, IsSystemDefined flag
-- [ ] **T091** [P] Implement UserPreferences entity in `src/TradingJournal/Models/UserPreferences.cs` with ThemeMode enum, singleton pattern logic
-- [ ] **T092** [P] Implement enums: TradeDirection, AdjustmentType, ThemeMode in `src/TradingJournal/Models/Enums.cs`
+- [x] **T087** [P] Implement Trade entity in `src/TradingJournal/Models/Trade.cs` with all 35+ properties, TradeDirection enum, navigation properties (Adjustments, Attachments)
+- [x] **T088** [P] Implement ManagementAdjustment entity in `src/TradingJournal/Models/ManagementAdjustment.cs` with AdjustmentType enum, foreign key to Trade
+- [x] **T089** [P] Implement Attachment entity in `src/TradingJournal/Models/Attachment.cs` with file metadata properties, StoragePath, Caption
+- [x] **T090** [P] Implement StrategyCategory entity in `src/TradingJournal/Models/StrategyCategory.cs` with Name, ColorHex, IsSystemDefined flag
+- [x] **T091** [P] Implement UserPreferences entity in `src/TradingJournal/Models/UserPreferences.cs` with ThemeMode enum, singleton pattern logic
+- [x] **T092** [P] Implement enums: TradeDirection, AdjustmentType, ThemeMode in `src/TradingJournal/Models/Enums.cs`
 
 ### Calculation Implementations
-- [ ] **T093** [P] Implement RiskRewardCalculator in `src/TradingJournal.Core/Calculations/RiskRewardCalculator.cs` with static methods: CalculatePlannedRR, CalculateRealizedRR
-- [ ] **T094** [P] Implement ProfitLossCalculator in `src/TradingJournal.Core/Calculations/ProfitLossCalculator.cs` with methods: CalculateProfitLossCurrency, CalculateProfitLossR
-- [ ] **T095** [P] Implement HoldingTimeCalculator in `src/TradingJournal.Core/Calculations/HoldingTimeCalculator.cs` with method: CalculateHoldingTime (TimeSpan)
+- [x] **T093** [P] Implement RiskRewardCalculator in `src/TradingJournal.Core/Calculations/RiskRewardCalculator.cs` with static methods: CalculatePlannedRR, CalculateRealizedRR
+- [x] **T094** [P] Implement ProfitLossCalculator in `src/TradingJournal.Core/Calculations/ProfitLossCalculator.cs` with methods: CalculateProfitLossCurrency, CalculateProfitLossR
+- [x] **T095** [P] Implement HoldingTimeCalculator in `src/TradingJournal.Core/Calculations/HoldingTimeCalculator.cs` with method: CalculateHoldingTime (TimeSpan)
 
 ### Validation Implementations
-- [ ] **T096** [P] Implement TradeValidator in `src/TradingJournal.Core/Validators/TradeValidator.cs` using FluentValidation: Symbol required, prices > 0, RiskPercentage 0.1-100, direction-specific SL/TP validation
-- [ ] **T097** [P] Implement AttachmentValidator in `src/TradingJournal.Core/Validators/AttachmentValidator.cs`: File size < 10MB, allowed extensions, storage path format
+- [x] **T096** [P] Implement TradeValidator in `src/TradingJournal.Core/Validators/TradeValidator.cs` using FluentValidation: Symbol required, prices > 0, RiskPercentage 0.1-100, direction-specific SL/TP validation
+- [x] **T097** [P] Implement AttachmentValidator in `src/TradingJournal.Core/Validators/AttachmentValidator.cs`: File size < 10MB, allowed extensions, storage path format
 
 ### DbContext Implementation
-- [ ] **T098** Implement TradingDbContext in `src/TradingJournal/Data/TradingDbContext.cs` with DbSet properties for all entities, constructor accepting DbContextOptions
-- [ ] **T099** Add entity configurations in TradingDbContext.OnModelCreating: Trade indexes (Symbol, EntryDateTime, SetupType, composite), unique constraints, relationship configurations
-- [ ] **T100** Configure cascade delete for Trade→ManagementAdjustment, Trade→Attachment relationships in TradingDbContext
-- [ ] **T101** Implement seed data in TradingDbContext: Default StrategyCategory records (Breakout, Pullback, Reversal, Trend Continuation with colors), UserPreferences singleton with default values
+- [x] **T098** Implement TradingDbContext in `src/TradingJournal/Data/TradingDbContext.cs` with DbSet properties for all entities, constructor accepting DbContextOptions
+- [x] **T099** Add entity configurations in TradingDbContext.OnModelCreating for indexes, unique constraints
+- [x] **T100** Configure cascade delete for Trade→ManagementAdjustment and Trade→Attachment
+- [x] **T101** Implement seed data for StrategyCategories and UserPreferences in OnModelCreating
 
 ### Migrations
-- [ ] **T102** Generate initial migration: `dotnet ef migrations add InitialCreate --project src/TradingJournal --startup-project src/TradingJournal`
-- [ ] **T103** Review migration file: Verify all tables created (Trades, ManagementAdjustments, Attachments, StrategyCategories, UserPreferences), all indexes added
-- [ ] **T104** Apply migration to development database: `dotnet ef database update --project src/TradingJournal`
+- [x] **T102** Generate initial migration: `dotnet ef migrations add InitialCreate --project src/TradingJournal.Data --startup-project src/TradingJournal.MigrationsHost`
+- [x] **T103** Review migration file: Verified all tables created (Trades, ManagementAdjustments, Attachments, StrategyCategories, UserPreferences), all indexes added
+- [x] **T104** Apply migration to development database: `dotnet ef database update --project src/TradingJournal.Data --startup-project src/TradingJournal.MigrationsHost`
 
 ---
 
@@ -220,7 +220,7 @@
 
 ---
 
-## Phase 3.7: Core Implementation - ViewModels (MVVM)
+## Phase 3.6: Core Implementation - ViewModels (MVVM)
 
 ### Base ViewModel
 - [ ] **T149** [P] Implement BaseViewModel in `src/TradingJournal/ViewModels/BaseViewModel.cs` inheriting from ObservableObject (CommunityToolkit.Mvvm), add IsBusy property, Title property

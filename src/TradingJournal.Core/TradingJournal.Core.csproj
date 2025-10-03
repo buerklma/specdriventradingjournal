@@ -7,5 +7,8 @@
   <ItemGroup>
     <Folder Include="Calculations\" />
     <Folder Include="Validators\" />
+    <PackageReference Include="FluentValidation" Version="11.5.0" />
+    <!-- Reference data layer for models -->
+    <ProjectReference Include="..\TradingJournal.Data\TradingJournal.Data.csproj" />
   </ItemGroup>
 </Project>

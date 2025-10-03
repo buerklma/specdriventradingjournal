@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using Xunit;
-using TradingJournal.Models;
+using TradingJournal.Data.Models;
 using TradingJournal.Core.Validators;
 
 namespace TradingJournal.UnitTests.Validators

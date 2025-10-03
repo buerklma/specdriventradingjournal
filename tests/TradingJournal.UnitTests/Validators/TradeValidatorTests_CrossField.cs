@@ -1,6 +1,6 @@
 using System;
 using Xunit;
-using TradingJournal.Models;
+using TradingJournal.Data.Models;
 using TradingJournal.Core.Validators;
 
 namespace TradingJournal.UnitTests.Validators

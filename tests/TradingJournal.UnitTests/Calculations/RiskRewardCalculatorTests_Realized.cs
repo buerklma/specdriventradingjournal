@@ -1,5 +1,3 @@
-using System;
-using Xunit;
 using TradingJournal.Core.Calculations;
 
 namespace TradingJournal.UnitTests.Calculations

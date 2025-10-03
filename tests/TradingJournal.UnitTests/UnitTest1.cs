@@ -1,4 +1,4 @@
-﻿namespace TradingJournal.UnitTests;
+namespace TradingJournal.UnitTests;
 
 public class UnitTest1
 {

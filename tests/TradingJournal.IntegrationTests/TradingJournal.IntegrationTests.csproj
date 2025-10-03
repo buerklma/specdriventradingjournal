@@ -21,9 +21,9 @@
     </PackageReference>
     <PackageReference Include="xunit" Version="2.9.2" />
   <PackageReference Include="xunit.runner.visualstudio" Version="2.8.2" />
-  <!-- Reference main projects for Data layer tests -->
-  <ProjectReference Include="..\..\src\TradingJournal\TradingJournal.csproj" />
-  <ProjectReference Include="..\..\src\TradingJournal.Core\TradingJournal.Core.csproj" />
+     <!-- Reference data and core projects for integration tests -->
+     <ProjectReference Include="..\..\src\TradingJournal.Data\TradingJournal.Data.csproj" />
+     <ProjectReference Include="..\..\src\TradingJournal.Core\TradingJournal.Core.csproj" />
   </ItemGroup>
 
   <ItemGroup>

@@ -12,7 +12,7 @@ namespace TradingJournal.UnitTests.Calculations
             decimal entryPrice = 100m;
             decimal positionSize = 2m;
 
-            decimal result = ProfitLossCalculator.CalculateProfitLossCurrency(exitPrice, entryPrice, positionSize, Direction.Long);
+            decimal result = ProfitLossCalculator.CalculateProfitLossCurrency(exitPrice, entryPrice, positionSize, ProfitLossCalculator.Direction.Long);
             decimal expected = (exitPrice - entryPrice) * positionSize;
 
             Assert.Equal(expected, result);
@@ -25,7 +25,7 @@ namespace TradingJournal.UnitTests.Calculations
             decimal entryPrice = 100m;
             decimal positionSize = 3m;
 
-            decimal result = ProfitLossCalculator.CalculateProfitLossCurrency(exitPrice, entryPrice, positionSize, Direction.Short);
+            decimal result = ProfitLossCalculator.CalculateProfitLossCurrency(exitPrice, entryPrice, positionSize, ProfitLossCalculator.Direction.Short);
             decimal expected = (entryPrice - exitPrice) * positionSize;
 
             Assert.Equal(expected, result);
