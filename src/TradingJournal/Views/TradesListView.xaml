@@ -34,11 +34,20 @@
             </VerticalStackLayout>
         </Frame>
 
+        <!-- Loading Indicator -->
+        <ActivityIndicator Grid.Row="1"
+                          IsRunning="{Binding IsBusy}"
+                          IsVisible="{Binding IsBusy}"
+                          HorizontalOptions="Center"
+                          VerticalOptions="Center"
+                          Color="{AppThemeBinding Light=#2196F3, Dark=#64B5F6}" />
+
         <!-- Trades List -->
         <CollectionView Grid.Row="1"
                         ItemsSource="{Binding Trades}"
                         SelectionMode="None"
-                        Margin="5">
+                        Margin="5"
+                        IsVisible="{Binding IsBusy, Converter={StaticResource InvertedBoolConverter}}">
             <CollectionView.EmptyView>
                 <ContentView>
                     <VerticalStackLayout HorizontalOptions="Center" VerticalOptions="Center" Spacing="10">

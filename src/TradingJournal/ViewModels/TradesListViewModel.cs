@@ -75,6 +75,13 @@ namespace TradingJournal.ViewModels
                 HasNextPage = PageNumber < TotalPages;
                 HasPreviousPage = PageNumber > 1;
             }
+            catch (Exception ex)
+            {
+                await Shell.Current.DisplayAlert(
+                    "Error",
+                    $"Failed to load trades: {ex.Message}",
+                    "OK");
+            }
             finally
             {
                 IsBusy = false;

@@ -8,6 +8,9 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using QuestPDF.Fluent;
+using QuestPDF.Helpers;
+using QuestPDF.Infrastructure;
 using TradingJournal.Core.Interfaces;
 using TradingJournal.Core.Models;
 using TradingJournal.Data;
@@ -121,35 +124,12 @@ namespace TradingJournal.Core.Services
                 throw new ArgumentException("Output path cannot be null or whitespace.", nameof(outputPath));
             }
 
-            var trades = await _context.Trades.OrderBy(t => t.EntryDateTime).ToListAsync();
+            // Configure QuestPDF license
+            QuestPDF.Settings.License = LicenseType.Community;
 
-            // Note: This is a placeholder implementation
-            // In production, use a library like QuestPDF, iTextSharp, or PdfSharpCore
-
-            var content = new StringBuilder();
-            content.AppendLine("Trading Journal Report");
-            content.AppendLine($"Generated: {DateTime.Now:yyyy-MM-dd HH:mm:ss}");
-            content.AppendLine();
-
-            if (includeSummary)
-            {
-                var totalTrades = trades.Count;
-                var totalProfitLoss = trades.Sum(t => t.ProfitLossCurrency ?? 0);
-                var winningTrades = trades.Count(t => t.ProfitLossCurrency.HasValue && t.ProfitLossCurrency.Value > 0);
-                var winRate = totalTrades > 0 ? (decimal)winningTrades / totalTrades * 100 : 0;
-
-                content.AppendLine("Summary:");
-                content.AppendLine($"Total Trades: {totalTrades}");
-                content.AppendLine($"Win Rate: {winRate:F2}%");
-                content.AppendLine($"Total P&L: ${totalProfitLoss:F2}");
-                content.AppendLine();
-            }
-
-            content.AppendLine("Trades:");
-            foreach (var trade in trades)
-            {
-                content.AppendLine($"{trade.EntryDateTime:yyyy-MM-dd} | {trade.Symbol} | {trade.Direction} | P&L: ${trade.ProfitLossCurrency ?? 0:F2}");
-            }
+            var trades = await _context.Trades
+                .OrderBy(t => t.EntryDateTime)
+                .ToListAsync();
 
             var directory = Path.GetDirectoryName(outputPath);
             if (!string.IsNullOrEmpty(directory) && !Directory.Exists(directory))
@@ -157,10 +137,174 @@ namespace TradingJournal.Core.Services
                 Directory.CreateDirectory(directory);
             }
 
-            await File.WriteAllTextAsync(outputPath, content.ToString());
+            // Calculate statistics
+            var totalTrades = trades.Count;
+            var closedTrades = trades.Where(t => t.ExitDateTime.HasValue).ToList();
+            var totalProfitLoss = closedTrades.Sum(t => t.ProfitLossCurrency ?? 0);
+            var winningTrades = closedTrades.Count(t => t.ProfitLossCurrency > 0);
+            var losingTrades = closedTrades.Count(t => t.ProfitLossCurrency < 0);
+            var winRate = closedTrades.Count > 0 ? (decimal)winningTrades / closedTrades.Count * 100 : 0;
 
-            // TODO: Implement actual PDF generation with proper formatting
-            // This requires adding a PDF library NuGet package
+            var grossWins = closedTrades.Where(t => t.ProfitLossCurrency > 0).Sum(t => t.ProfitLossCurrency ?? 0);
+            var grossLosses = Math.Abs(closedTrades.Where(t => t.ProfitLossCurrency < 0).Sum(t => t.ProfitLossCurrency ?? 0));
+            var profitFactor = grossLosses > 0 ? grossWins / grossLosses : 0;
+
+            var avgRMultiple = closedTrades.Count > 0 ? closedTrades.Average(t => t.ProfitLossR ?? 0) : 0;
+
+            // Calculate max drawdown
+            var cumulativePL = 0m;
+            var peak = 0m;
+            var maxDrawdown = 0m;
+            foreach (var trade in closedTrades.OrderBy(t => t.ExitDateTime))
+            {
+                cumulativePL += trade.ProfitLossCurrency ?? 0;
+                if (cumulativePL > peak)
+                {
+                    peak = cumulativePL;
+                }
+                var drawdown = peak - cumulativePL;
+                if (drawdown > maxDrawdown)
+                {
+                    maxDrawdown = drawdown;
+                }
+            }
+            var maxDrawdownPercent = peak > 0 ? (maxDrawdown / peak) * 100 : 0;
+
+            // Generate PDF
+            var document = Document.Create(container =>
+            {
+                container.Page(page =>
+                {
+                    page.Size(PageSizes.A4);
+                    page.Margin(2, Unit.Centimetre);
+                    page.PageColor(Colors.White);
+                    page.DefaultTextStyle(x => x.FontSize(10).FontColor(Colors.Black));
+
+                    page.Header()
+                        .Column(column =>
+                        {
+                            column.Item().AlignCenter().Text("Trading Journal Report")
+                                .FontSize(24).Bold().FontColor(Colors.Blue.Darken2);
+                            column.Item().AlignCenter().Text($"Generated: {DateTime.Now:yyyy-MM-dd HH:mm:ss}")
+                                .FontSize(10).FontColor(Colors.Grey.Darken1);
+                            column.Item().PaddingVertical(10).LineHorizontal(1).LineColor(Colors.Grey.Lighten1);
+                        });
+
+                    page.Content()
+                        .Column(column =>
+                        {
+                            if (includeSummary)
+                            {
+                                // Summary Section
+                                column.Item().PaddingTop(10).Text("Performance Summary")
+                                    .FontSize(16).Bold().FontColor(Colors.Blue.Darken1);
+
+                                column.Item().PaddingTop(5).Table(table =>
+                                {
+                                    table.ColumnsDefinition(columns =>
+                                    {
+                                        columns.RelativeColumn(2);
+                                        columns.RelativeColumn(1);
+                                    });
+
+                                    table.Cell().Border(1).Padding(5).Text("Total Trades").Bold();
+                                    table.Cell().Border(1).Padding(5).AlignRight().Text(totalTrades.ToString());
+
+                                    table.Cell().Border(1).Padding(5).Text("Closed Trades").Bold();
+                                    table.Cell().Border(1).Padding(5).AlignRight().Text(closedTrades.Count.ToString());
+
+                                    table.Cell().Border(1).Padding(5).Text("Win Rate").Bold();
+                                    table.Cell().Border(1).Padding(5).AlignRight().Text($"{winRate:F2}%")
+                                        .FontColor(winRate >= 50 ? Colors.Green.Darken1 : Colors.Red.Darken1);
+
+                                    table.Cell().Border(1).Padding(5).Text("Winning Trades").Bold();
+                                    table.Cell().Border(1).Padding(5).AlignRight().Text(winningTrades.ToString())
+                                        .FontColor(Colors.Green.Darken1);
+
+                                    table.Cell().Border(1).Padding(5).Text("Losing Trades").Bold();
+                                    table.Cell().Border(1).Padding(5).AlignRight().Text(losingTrades.ToString())
+                                        .FontColor(Colors.Red.Darken1);
+
+                                    table.Cell().Border(1).Padding(5).Text("Total P/L").Bold();
+                                    table.Cell().Border(1).Padding(5).AlignRight().Text($"${totalProfitLoss:F2}")
+                                        .FontColor(totalProfitLoss >= 0 ? Colors.Green.Darken1 : Colors.Red.Darken1);
+
+                                    table.Cell().Border(1).Padding(5).Text("Profit Factor").Bold();
+                                    table.Cell().Border(1).Padding(5).AlignRight().Text($"{profitFactor:F2}");
+
+                                    table.Cell().Border(1).Padding(5).Text("Avg R-Multiple").Bold();
+                                    table.Cell().Border(1).Padding(5).AlignRight().Text($"{avgRMultiple:F2}R")
+                                        .FontColor(avgRMultiple >= 0 ? Colors.Green.Darken1 : Colors.Red.Darken1);
+
+                                    table.Cell().Border(1).Padding(5).Text("Max Drawdown").Bold();
+                                    table.Cell().Border(1).Padding(5).AlignRight().Text($"{maxDrawdownPercent:F2}%")
+                                        .FontColor(Colors.Red.Darken1);
+                                });
+                            }
+
+                            // Recent Trades Section
+                            column.Item().PaddingTop(20).Text("Recent Trades (Last 10)")
+                                .FontSize(16).Bold().FontColor(Colors.Blue.Darken1);
+
+                            var recentTrades = closedTrades.OrderByDescending(t => t.ExitDateTime).Take(10).ToList();
+
+                            column.Item().PaddingTop(5).Table(table =>
+                            {
+                                table.ColumnsDefinition(columns =>
+                                {
+                                    columns.RelativeColumn(1);
+                                    columns.RelativeColumn(1);
+                                    columns.RelativeColumn(1);
+                                    columns.RelativeColumn(1);
+                                    columns.RelativeColumn(1);
+                                    columns.RelativeColumn(1);
+                                });
+
+                                // Header
+                                table.Cell().Border(1).Padding(3).Background(Colors.Grey.Lighten2)
+                                    .Text("Symbol").Bold().FontSize(8);
+                                table.Cell().Border(1).Padding(3).Background(Colors.Grey.Lighten2)
+                                    .Text("Direction").Bold().FontSize(8);
+                                table.Cell().Border(1).Padding(3).Background(Colors.Grey.Lighten2)
+                                    .Text("Entry Date").Bold().FontSize(8);
+                                table.Cell().Border(1).Padding(3).Background(Colors.Grey.Lighten2)
+                                    .Text("Exit Date").Bold().FontSize(8);
+                                table.Cell().Border(1).Padding(3).Background(Colors.Grey.Lighten2)
+                                    .Text("P/L $").Bold().FontSize(8);
+                                table.Cell().Border(1).Padding(3).Background(Colors.Grey.Lighten2)
+                                    .Text("P/L R").Bold().FontSize(8);
+
+                                // Data rows
+                                foreach (var trade in recentTrades)
+                                {
+                                    table.Cell().Border(1).Padding(3).Text(trade.Symbol ?? "").FontSize(8);
+                                    table.Cell().Border(1).Padding(3).Text(trade.Direction.ToString()).FontSize(8);
+                                    table.Cell().Border(1).Padding(3).Text(trade.EntryDateTime.ToString("MM/dd/yyyy")).FontSize(8);
+                                    table.Cell().Border(1).Padding(3).Text(trade.ExitDateTime?.ToString("MM/dd/yyyy") ?? "Open").FontSize(8);
+
+                                    var plColor = (trade.ProfitLossCurrency ?? 0) >= 0 ? Colors.Green.Darken1 : Colors.Red.Darken1;
+                                    table.Cell().Border(1).Padding(3).AlignRight()
+                                        .Text($"${trade.ProfitLossCurrency ?? 0:F2}").FontSize(8).FontColor(plColor);
+                                    table.Cell().Border(1).Padding(3).AlignRight()
+                                        .Text($"{trade.ProfitLossR ?? 0:F2}R").FontSize(8).FontColor(plColor);
+                                }
+                            });
+                        });
+
+                    page.Footer()
+                        .AlignCenter()
+                        .Text(text =>
+                        {
+                            text.DefaultTextStyle(TextStyle.Default.FontSize(9).FontColor(Colors.Grey.Darken1));
+                            text.Span("Page ");
+                            text.CurrentPageNumber();
+                            text.Span(" of ");
+                            text.TotalPages();
+                        });
+                });
+            });
+
+            document.GeneratePdf(outputPath);
 
             return outputPath;
         }

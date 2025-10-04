@@ -23,7 +23,14 @@ namespace TradingJournal.Core.Services
 
         public async Task<Dictionary<string, object>> GetOverallStatisticsAsync()
         {
-            var trades = await _context.Trades.ToListAsync();
+            var trades = await _context.Trades
+                .AsNoTracking()
+                .Select(t => new
+                {
+                    t.ProfitLossCurrency,
+                    t.RealizedRRRatio
+                })
+                .ToListAsync();
 
             var winningTrades = trades.Where(t => t.ProfitLossCurrency.HasValue && t.ProfitLossCurrency.Value > 0).ToList();
             var losingTrades = trades.Where(t => t.ProfitLossCurrency.HasValue && t.ProfitLossCurrency.Value < 0).ToList();
@@ -46,22 +53,29 @@ namespace TradingJournal.Core.Services
 
         public async Task<decimal> GetWinRateAsync()
         {
-            var trades = await _context.Trades.ToListAsync();
-            if (!trades.Any())
+            var tradeCount = await _context.Trades.AsNoTracking().CountAsync();
+            if (tradeCount == 0)
             {
                 return 0;
             }
 
-            var winningTrades = trades.Count(t => t.ProfitLossCurrency.HasValue && t.ProfitLossCurrency.Value > 0);
-            return (decimal)winningTrades / trades.Count * 100;
+            var winningTradesCount = await _context.Trades
+                .AsNoTracking()
+                .CountAsync(t => t.ProfitLossCurrency.HasValue && t.ProfitLossCurrency.Value > 0);
+
+            return (decimal)winningTradesCount / tradeCount * 100;
         }
 
         public async Task<decimal> GetProfitFactorAsync()
         {
-            var trades = await _context.Trades.ToListAsync();
+            var profitLossData = await _context.Trades
+                .AsNoTracking()
+                .Where(t => t.ProfitLossCurrency.HasValue)
+                .Select(t => t.ProfitLossCurrency!.Value)
+                .ToListAsync();
 
-            var totalWins = trades.Where(t => t.ProfitLossCurrency.HasValue && t.ProfitLossCurrency.Value > 0).Sum(t => t.ProfitLossCurrency!.Value);
-            var totalLosses = Math.Abs(trades.Where(t => t.ProfitLossCurrency.HasValue && t.ProfitLossCurrency.Value < 0).Sum(t => t.ProfitLossCurrency!.Value));
+            var totalWins = profitLossData.Where(pl => pl > 0).Sum();
+            var totalLosses = Math.Abs(profitLossData.Where(pl => pl < 0).Sum());
 
             if (totalLosses == 0)
             {
@@ -73,22 +87,29 @@ namespace TradingJournal.Core.Services
 
         public async Task<decimal> GetAverageRMultipleAsync()
         {
-            var trades = await _context.Trades.Where(t => t.RealizedRRRatio.HasValue).ToListAsync();
-            if (!trades.Any())
+            var rrRatios = await _context.Trades
+                .AsNoTracking()
+                .Where(t => t.RealizedRRRatio.HasValue)
+                .Select(t => t.RealizedRRRatio!.Value)
+                .ToListAsync();
+
+            if (!rrRatios.Any())
             {
                 return 0;
             }
 
-            return trades.Average(t => t.RealizedRRRatio!.Value);
+            return rrRatios.Average();
         }
 
         public async Task<decimal> GetMaxDrawdownAsync()
         {
-            var trades = await _context.Trades
+            var profitLossData = await _context.Trades
+                .AsNoTracking()
                 .OrderBy(t => t.EntryDateTime)
+                .Select(t => t.ProfitLossCurrency ?? 0)
                 .ToListAsync();
 
-            if (!trades.Any())
+            if (!profitLossData.Any())
             {
                 return 0;
             }
@@ -97,9 +118,9 @@ namespace TradingJournal.Core.Services
             decimal peak = 0;
             decimal maxDrawdown = 0;
 
-            foreach (var trade in trades)
+            foreach (var profitLoss in profitLossData)
             {
-                runningTotal += trade.ProfitLossCurrency ?? 0;
+                runningTotal += profitLoss;
                 if (runningTotal > peak)
                 {
                     peak = runningTotal;
@@ -117,7 +138,10 @@ namespace TradingJournal.Core.Services
 
         public async Task<Dictionary<string, decimal>> GetStatisticsBySymbolAsync()
         {
-            var trades = await _context.Trades.ToListAsync();
+            var trades = await _context.Trades
+                .AsNoTracking()
+                .Select(t => new { t.Symbol, t.ProfitLossCurrency })
+                .ToListAsync();
 
             return trades
                 .GroupBy(t => t.Symbol)
@@ -129,10 +153,13 @@ namespace TradingJournal.Core.Services
 
         public async Task<Dictionary<string, decimal>> GetStatisticsBySetupAsync()
         {
-            var trades = await _context.Trades.ToListAsync();
+            var trades = await _context.Trades
+                .AsNoTracking()
+                .Where(t => !string.IsNullOrEmpty(t.SetupType))
+                .Select(t => new { t.SetupType, t.ProfitLossCurrency })
+                .ToListAsync();
 
             return trades
-                .Where(t => !string.IsNullOrEmpty(t.SetupType))
                 .GroupBy(t => t.SetupType!)
                 .ToDictionary(
                     g => g.Key,
@@ -148,7 +175,9 @@ namespace TradingJournal.Core.Services
             }
 
             var trades = await _context.Trades
+                .AsNoTracking()
                 .Where(t => t.SetupType == setup)
+                .Select(t => new { t.ProfitLossCurrency, t.RealizedRRRatio })
                 .ToListAsync();
 
             if (!trades.Any())
@@ -177,7 +206,9 @@ namespace TradingJournal.Core.Services
         public async Task<List<(DateTime Date, decimal CumulativeProfitLoss)>> GetEquityCurveAsync()
         {
             var trades = await _context.Trades
+                .AsNoTracking()
                 .OrderBy(t => t.EntryDateTime)
+                .Select(t => new { t.EntryDateTime, t.ProfitLossCurrency })
                 .ToListAsync();
 
             var equityCurve = new List<(DateTime Date, decimal CumulativeProfitLoss)>();
@@ -194,7 +225,11 @@ namespace TradingJournal.Core.Services
 
         public async Task<Dictionary<string, int>> GetRMultipleDistributionAsync()
         {
-            var trades = await _context.Trades.Where(t => t.RealizedRRRatio.HasValue).ToListAsync();
+            var rrRatios = await _context.Trades
+                .AsNoTracking()
+                .Where(t => t.RealizedRRRatio.HasValue)
+                .Select(t => t.RealizedRRRatio!.Value)
+                .ToListAsync();
 
             var distribution = new Dictionary<string, int>
             {
@@ -206,9 +241,8 @@ namespace TradingJournal.Core.Services
                 ["Above 2R"] = 0
             };
 
-            foreach (var trade in trades)
+            foreach (var rr in rrRatios)
             {
-                var rr = trade.RealizedRRRatio!.Value;
                 if (rr < -2) distribution["Below -2R"]++;
                 else if (rr < -1) distribution["-2R to -1R"]++;
                 else if (rr < 0) distribution["-1R to 0R"]++;
@@ -223,7 +257,9 @@ namespace TradingJournal.Core.Services
         public async Task<Dictionary<string, decimal>> GetMonthlyPerformanceAsync(int year)
         {
             var trades = await _context.Trades
+                .AsNoTracking()
                 .Where(t => t.EntryDateTime.Year == year)
+                .Select(t => new { t.EntryDateTime.Month, t.ProfitLossCurrency })
                 .ToListAsync();
 
             var monthlyPerformance = new Dictionary<string, decimal>();
@@ -231,7 +267,7 @@ namespace TradingJournal.Core.Services
             for (int month = 1; month <= 12; month++)
             {
                 var monthName = new DateTime(year, month, 1).ToString("MMMM");
-                var monthTrades = trades.Where(t => t.EntryDateTime.Month == month);
+                var monthTrades = trades.Where(t => t.Month == month);
                 monthlyPerformance[monthName] = monthTrades.Sum(t => t.ProfitLossCurrency ?? 0);
             }
 
@@ -240,25 +276,26 @@ namespace TradingJournal.Core.Services
 
         public async Task<decimal> GetDisciplineScoreAsync()
         {
-            var trades = await _context.Trades.ToListAsync();
-            if (!trades.Any())
+            var disciplineScores = await _context.Trades
+                .AsNoTracking()
+                .Where(t => t.DisciplineScore.HasValue)
+                .Select(t => t.DisciplineScore!.Value)
+                .ToListAsync();
+
+            if (!disciplineScores.Any())
             {
                 return 0;
             }
 
-            // Calculate discipline score based on trades following predefined rules
-            var tradesWithSetup = trades.Count(t => !string.IsNullOrEmpty(t.SetupType));
-            var tradesWithStopLoss = trades.Count(t => t.StopLoss > 0);
-            var tradesWithNotes = trades.Count(t => !string.IsNullOrEmpty(t.Notes));
-
-            var disciplineScore = (decimal)(tradesWithSetup + tradesWithStopLoss + tradesWithNotes) / (trades.Count * 3) * 100;
-
-            return disciplineScore;
+            return (decimal)disciplineScores.Average();
         }
 
         public async Task<Dictionary<string, int>> GetEmotionFrequencyAsync()
         {
-            var trades = await _context.Trades.ToListAsync();
+            var trades = await _context.Trades
+                .AsNoTracking()
+                .Select(t => new { t.EmotionAtEntry, t.EmotionDuringTrade, t.EmotionAtExit })
+                .ToListAsync();
 
             var emotionCounts = new Dictionary<string, int>();
 
@@ -283,33 +320,34 @@ namespace TradingJournal.Core.Services
 
         public async Task<List<string>> GetCommonMistakesAsync()
         {
-            var trades = await _context.Trades
+            var mistakes = await _context.Trades
+                .AsNoTracking()
                 .Where(t => t.ProfitLossCurrency.HasValue && t.ProfitLossCurrency.Value < 0 && !string.IsNullOrEmpty(t.Mistakes))
+                .Select(t => t.Mistakes!)
                 .ToListAsync();
 
-            var mistakes = new List<string>();
-
             // Extract common patterns from losing trades
-            var notesWithKeywords = trades
-                .Select(t => t.Mistakes!)
+            var notesWithKeywords = mistakes
                 .Where(notes => notes.Contains("mistake", StringComparison.OrdinalIgnoreCase) ||
                                 notes.Contains("error", StringComparison.OrdinalIgnoreCase) ||
                                 notes.Contains("should have", StringComparison.OrdinalIgnoreCase) ||
-                                notes.Contains("failed to", StringComparison.OrdinalIgnoreCase));
+                                notes.Contains("failed to", StringComparison.OrdinalIgnoreCase))
+                .Distinct()
+                .Take(10)
+                .ToList();
 
-            mistakes.AddRange(notesWithKeywords);
-
-            return mistakes.Distinct().Take(10).ToList();
+            return notesWithKeywords;
         }
 
         public async Task<List<string>> GetKeyLessonsAsync()
         {
-            var trades = await _context.Trades
+            var lessons = await _context.Trades
+                .AsNoTracking()
                 .Where(t => !string.IsNullOrEmpty(t.LessonsLearned))
+                .Select(t => t.LessonsLearned!)
                 .ToListAsync();
 
-            return trades
-                .Select(t => t.LessonsLearned!)
+            return lessons
                 .Distinct()
                 .Take(10)
                 .ToList();

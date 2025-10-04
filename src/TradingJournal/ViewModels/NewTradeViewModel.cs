@@ -54,6 +54,27 @@ namespace TradingJournal.ViewModels
         [ObservableProperty]
         private decimal plannedRR;
 
+        [ObservableProperty]
+        private string? symbolError;
+
+        [ObservableProperty]
+        private string? entryPriceError;
+
+        [ObservableProperty]
+        private string? stopLossError;
+
+        [ObservableProperty]
+        private string? takeProfitError;
+
+        [ObservableProperty]
+        private string? positionSizeError;
+
+        [ObservableProperty]
+        private string? riskPercentageError;
+
+        [ObservableProperty]
+        private bool isValid;
+
         public NewTradeViewModel(ITradeService tradeService)
         {
             _tradeService = tradeService;
@@ -63,21 +84,40 @@ namespace TradingJournal.ViewModels
         partial void OnEntryPriceChanged(decimal value)
         {
             CalculatePlannedRR();
+            ValidateInput();
         }
 
         partial void OnStopLossChanged(decimal value)
         {
             CalculatePlannedRR();
+            ValidateInput();
         }
 
         partial void OnTakeProfitChanged(decimal value)
         {
             CalculatePlannedRR();
+            ValidateInput();
         }
 
         partial void OnDirectionChanged(TradeDirection value)
         {
             CalculatePlannedRR();
+            ValidateInput();
+        }
+
+        partial void OnSymbolChanged(string value)
+        {
+            ValidateInput();
+        }
+
+        partial void OnPositionSizeChanged(decimal value)
+        {
+            ValidateInput();
+        }
+
+        partial void OnRiskPercentageChanged(decimal value)
+        {
+            ValidateInput();
         }
 
         [RelayCommand]
@@ -157,73 +197,87 @@ namespace TradingJournal.ViewModels
 
         private bool ValidateInput()
         {
+            // Clear previous errors
+            SymbolError = null;
+            EntryPriceError = null;
+            StopLossError = null;
+            TakeProfitError = null;
+            PositionSizeError = null;
+            RiskPercentageError = null;
+
+            bool isValid = true;
+
             if (string.IsNullOrWhiteSpace(Symbol))
             {
-                Shell.Current.DisplayAlert("Validation Error", "Symbol is required", "OK");
-                return false;
+                SymbolError = "Symbol is required";
+                isValid = false;
             }
 
             if (EntryPrice <= 0)
             {
-                Shell.Current.DisplayAlert("Validation Error", "Entry price must be greater than 0", "OK");
-                return false;
+                EntryPriceError = "Entry price must be greater than 0";
+                isValid = false;
             }
 
             if (StopLoss <= 0)
             {
-                Shell.Current.DisplayAlert("Validation Error", "Stop loss must be greater than 0", "OK");
-                return false;
+                StopLossError = "Stop loss must be greater than 0";
+                isValid = false;
             }
 
             if (TakeProfit <= 0)
             {
-                Shell.Current.DisplayAlert("Validation Error", "Take profit must be greater than 0", "OK");
-                return false;
+                TakeProfitError = "Take profit must be greater than 0";
+                isValid = false;
             }
 
             if (PositionSize <= 0)
             {
-                Shell.Current.DisplayAlert("Validation Error", "Position size must be greater than 0", "OK");
-                return false;
+                PositionSizeError = "Position size must be greater than 0";
+                isValid = false;
             }
 
             if (RiskPercentage < 0.1m || RiskPercentage > 100)
             {
-                Shell.Current.DisplayAlert("Validation Error", "Risk percentage must be between 0.1 and 100", "OK");
-                return false;
+                RiskPercentageError = "Risk percentage must be between 0.1 and 100";
+                isValid = false;
             }
 
             // Direction-specific validation
-            if (Direction == TradeDirection.Long)
+            if (EntryPrice > 0 && StopLoss > 0 && TakeProfit > 0)
             {
-                if (StopLoss >= EntryPrice)
+                if (Direction == TradeDirection.Long)
                 {
-                    Shell.Current.DisplayAlert("Validation Error", "For long trades, stop loss must be below entry price", "OK");
-                    return false;
-                }
+                    if (StopLoss >= EntryPrice)
+                    {
+                        StopLossError = "For long trades, stop loss must be below entry price";
+                        isValid = false;
+                    }
 
-                if (TakeProfit <= EntryPrice)
+                    if (TakeProfit <= EntryPrice)
+                    {
+                        TakeProfitError = "For long trades, take profit must be above entry price";
+                        isValid = false;
+                    }
+                }
+                else // Short
                 {
-                    Shell.Current.DisplayAlert("Validation Error", "For long trades, take profit must be above entry price", "OK");
-                    return false;
+                    if (StopLoss <= EntryPrice)
+                    {
+                        StopLossError = "For short trades, stop loss must be above entry price";
+                        isValid = false;
+                    }
+
+                    if (TakeProfit >= EntryPrice)
+                    {
+                        TakeProfitError = "For short trades, take profit must be below entry price";
+                        isValid = false;
+                    }
                 }
             }
-            else // Short
-            {
-                if (StopLoss <= EntryPrice)
-                {
-                    Shell.Current.DisplayAlert("Validation Error", "For short trades, stop loss must be above entry price", "OK");
-                    return false;
-                }
 
-                if (TakeProfit >= EntryPrice)
-                {
-                    Shell.Current.DisplayAlert("Validation Error", "For short trades, take profit must be below entry price", "OK");
-                    return false;
-                }
-            }
-
-            return true;
+            IsValid = isValid;
+            return isValid;
         }
     }
 }

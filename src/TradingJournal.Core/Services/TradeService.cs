@@ -37,6 +37,7 @@ namespace TradingJournal.Core.Services
         public async Task<Trade?> GetTradeByIdAsync(Guid id)
         {
             return await _context.Trades
+                .AsNoTracking()
                 .Include(t => t.Adjustments)
                 .Include(t => t.Attachments)
                 .FirstOrDefaultAsync(t => t.Id == id);
@@ -45,6 +46,7 @@ namespace TradingJournal.Core.Services
         public async Task<IEnumerable<Trade>> GetAllTradesAsync()
         {
             return await _context.Trades
+                .AsNoTracking()
                 .Include(t => t.Adjustments)
                 .Include(t => t.Attachments)
                 .OrderByDescending(t => t.EntryDateTime)
@@ -59,6 +61,7 @@ namespace TradingJournal.Core.Services
             }
 
             return await _context.Trades
+                .AsNoTracking()
                 .Include(t => t.Adjustments)
                 .Include(t => t.Attachments)
                 .Where(t => t.Symbol == symbol)
@@ -69,6 +72,7 @@ namespace TradingJournal.Core.Services
         public async Task<IEnumerable<Trade>> GetTradesByDateRangeAsync(DateTime startDate, DateTime endDate)
         {
             return await _context.Trades
+                .AsNoTracking()
                 .Include(t => t.Adjustments)
                 .Include(t => t.Attachments)
                 .Where(t => t.EntryDateTime >= startDate && t.EntryDateTime <= endDate)
@@ -90,6 +94,7 @@ namespace TradingJournal.Core.Services
 
             var totalCount = await _context.Trades.CountAsync();
             var trades = await _context.Trades
+                .AsNoTracking()
                 .Include(t => t.Adjustments)
                 .Include(t => t.Attachments)
                 .OrderByDescending(t => t.EntryDateTime)
@@ -124,6 +129,7 @@ namespace TradingJournal.Core.Services
             }
 
             var query = _context.Trades
+                .AsNoTracking()
                 .Include(t => t.Adjustments)
                 .Include(t => t.Attachments)
                 .AsQueryable();

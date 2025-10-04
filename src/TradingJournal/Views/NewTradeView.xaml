@@ -12,9 +12,16 @@
             <Label Text="New Trade" FontSize="28" FontAttributes="Bold" HorizontalOptions="Center" />
 
             <!-- Symbol -->
+            <Label Text="Symbol" FontAttributes="Bold" />
             <Entry Placeholder="Symbol (e.g., AAPL, EURUSD)" Text="{Binding Symbol}" />
+            <Label Text="{Binding SymbolError}"
+                   TextColor="Red"
+                   FontSize="12"
+                   IsVisible="{Binding SymbolError, Converter={StaticResource StringNotNullOrEmptyConverter}}"
+                   Margin="0,-10,0,0" />
 
             <!-- Direction -->
+            <Label Text="Direction" FontAttributes="Bold" />
             <Picker Title="Direction" SelectedItem="{Binding Direction}">
                 <Picker.ItemsSource>
                     <x:Array Type="{x:Type x:String}">
@@ -32,20 +39,45 @@
             <!-- Prices -->
             <Label Text="Entry Price" FontAttributes="Bold" />
             <Entry Placeholder="Entry Price" Text="{Binding EntryPrice}" Keyboard="Numeric" />
+            <Label Text="{Binding EntryPriceError}"
+                   TextColor="Red"
+                   FontSize="12"
+                   IsVisible="{Binding EntryPriceError, Converter={StaticResource StringNotNullOrEmptyConverter}}"
+                   Margin="0,-10,0,0" />
 
             <Label Text="Stop Loss" FontAttributes="Bold" />
             <Entry Placeholder="Stop Loss" Text="{Binding StopLoss}" Keyboard="Numeric" />
+            <Label Text="{Binding StopLossError}"
+                   TextColor="Red"
+                   FontSize="12"
+                   IsVisible="{Binding StopLossError, Converter={StaticResource StringNotNullOrEmptyConverter}}"
+                   Margin="0,-10,0,0" />
 
             <Label Text="Take Profit" FontAttributes="Bold" />
             <Entry Placeholder="Take Profit" Text="{Binding TakeProfit}" Keyboard="Numeric" />
+            <Label Text="{Binding TakeProfitError}"
+                   TextColor="Red"
+                   FontSize="12"
+                   IsVisible="{Binding TakeProfitError, Converter={StaticResource StringNotNullOrEmptyConverter}}"
+                   Margin="0,-10,0,0" />
 
             <!-- Position Size -->
             <Label Text="Position Size" FontAttributes="Bold" />
             <Entry Placeholder="Position Size" Text="{Binding PositionSize}" Keyboard="Numeric" />
+            <Label Text="{Binding PositionSizeError}"
+                   TextColor="Red"
+                   FontSize="12"
+                   IsVisible="{Binding PositionSizeError, Converter={StaticResource StringNotNullOrEmptyConverter}}"
+                   Margin="0,-10,0,0" />
 
             <!-- Risk Percentage -->
             <Label Text="Risk Percentage (%)" FontAttributes="Bold" />
             <Entry Placeholder="Risk %" Text="{Binding RiskPercentage}" Keyboard="Numeric" />
+            <Label Text="{Binding RiskPercentageError}"
+                   TextColor="Red"
+                   FontSize="12"
+                   IsVisible="{Binding RiskPercentageError, Converter={StaticResource StringNotNullOrEmptyConverter}}"
+                   Margin="0,-10,0,0" />
 
             <!-- Planned R:R (Display Only) -->
             <Frame Padding="15" BackgroundColor="{AppThemeBinding Light=#E8F5E9, Dark=#1B5E20}">
@@ -73,6 +105,7 @@
                 <Button Grid.Column="0"
                         Text="Create Trade"
                         Command="{Binding CreateTradeCommand}"
+                        IsEnabled="{Binding IsValid}"
                         BackgroundColor="#4CAF50" />
                 <Button Grid.Column="1"
                         Text="Cancel"

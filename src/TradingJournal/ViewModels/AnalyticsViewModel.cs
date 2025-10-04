@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -68,6 +69,13 @@ namespace TradingJournal.ViewModels
 
                 var performanceBySetup = await _analyticsService.GetStatisticsBySetupAsync();
                 PerformanceBySetupData = performanceBySetup.Cast<object>().ToList();
+            }
+            catch (Exception ex)
+            {
+                await Shell.Current.DisplayAlert(
+                    "Error",
+                    $"Failed to load analytics: {ex.Message}",
+                    "OK");
             }
             finally
             {

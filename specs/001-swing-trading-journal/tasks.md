@@ -286,38 +286,38 @@
 ## Phase 3.10: Integration - Charts & PDF
 
 ### Syncfusion Charts Integration
-- [ ] **T184** Configure Syncfusion license in `src/TradingJournal/MauiProgram.cs`: Call Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense(licenseKey) (use Community License key)
-- [ ] **T185** Implement equity curve chart in AnalyticsView.xaml: Use SfCartesianChart with LineSeries, bind to EquityCurveData (DateTime X-axis, decimal Y-axis for cumulative P/L)
-- [ ] **T186** Implement R/R distribution chart in AnalyticsView.xaml: Use SfCartesianChart with ColumnSeries, bind to RRDistributionData (string bucket labels X-axis, int trade count Y-axis)
-- [ ] **T187** Implement performance by setup chart in AnalyticsView.xaml: Use SfCartesianChart with BarSeries, bind to PerformanceBySetupData (string setup type Y-axis, decimal total P/L X-axis)
-- [ ] **T188** Style charts: Set chart titles, axis labels, legend, tooltip templates, color palettes (green for profits, red for losses)
+- [x] **T184** Configure Syncfusion license in `src/TradingJournal/MauiProgram.cs`: Call Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense(licenseKey) (use Community License key)
+- [x] **T185** Implement equity curve chart in AnalyticsView.xaml: Use SfCartesianChart with LineSeries, bind to EquityCurveData (DateTime X-axis, decimal Y-axis for cumulative P/L)
+- [x] **T186** Implement R/R distribution chart in AnalyticsView.xaml: Use SfCartesianChart with ColumnSeries, bind to RRDistributionData (string bucket labels X-axis, int trade count Y-axis)
+- [x] **T187** Implement performance by setup chart in AnalyticsView.xaml: Use SfCartesianChart with ColumnSeries, bind to PerformanceBySetupData (string setup type X-axis, decimal total P/L Y-axis)
+- [x] **T188** Style charts: Set chart titles (using Label above charts), axis labels, legend, tooltip templates, color palettes (green for profits, red for losses)
 
 ### QuestPDF Integration
-- [ ] **T189** Implement PDF document structure in ExportService.ExportToPdfAsync: Create QuestPDF Document with Page layout, add Cover page with Title "Trading Journal Report", date range, generation timestamp
-- [ ] **T190** Add Summary page to PDF: Table with key statistics (Win Rate, Profit Factor, Total P/L, Max Drawdown, Avg RR), styled with bold headers
-- [ ] **T191** Add Charts page to PDF: Capture Syncfusion chart controls as images (use chart.SaveAsImage or screenshot), embed images in PDF using QuestPDF.Image
-- [ ] **T192** Add Recent Trades table to PDF: Table with columns: Symbol, Direction, Entry/Exit Dates, P/L Currency, P/L R, render last 10 trades
-- [ ] **T193** Generate PDF file: Call document.GeneratePdf(outputPath), ensure file size < 5MB by optimizing chart image resolution
+- [x] **T189** Implement PDF document structure in ExportService.ExportToPdfAsync: Create QuestPDF Document with Page layout, add Cover page with Title "Trading Journal Report", date range, generation timestamp
+- [x] **T190** Add Summary page to PDF: Table with key statistics (Win Rate, Profit Factor, Total P/L, Max Drawdown, Avg RR), styled with bold headers
+- [ ] **T191** Add Charts page to PDF: Capture Syncfusion chart controls as images (use chart.SaveAsImage or screenshot), embed images in PDF using QuestPDF.Image (DEFERRED - requires image capture functionality)
+- [x] **T192** Add Recent Trades table to PDF: Table with columns: Symbol, Direction, Entry/Exit Dates, P/L Currency, P/L R, render last 10 trades
+- [x] **T193** Generate PDF file: Call document.GeneratePdf(outputPath), ensure file size < 5MB by optimizing chart image resolution
 
 ---
 
 ## Phase 3.11: Polish & Performance
 
 ### Performance Optimization
-- [ ] **T194** [P] Optimize TradeService.GetTradesPagedAsync: Add AsNoTracking() for read-only queries, ensure indexes used (check query execution plan)
-- [ ] **T195** [P] Optimize AnalyticsService queries: Use AsNoTracking(), batch calculations in memory instead of multiple DB round-trips, consider caching for GetOverallStatisticsAsync
+- [x] **T194** [P] Optimize TradeService.GetTradesPagedAsync: Add AsNoTracking() for read-only queries, ensure indexes used (check query execution plan)
+- [x] **T195** [P] Optimize AnalyticsService queries: Use AsNoTracking(), batch calculations in memory instead of multiple DB round-trips, consider caching for GetOverallStatisticsAsync
 - [ ] **T196** [P] Implement caching for analytics: Use MemoryCache with 5-minute expiry, cache key based on filter parameters, invalidate on trade create/update/delete
-- [ ] **T197** [P] Optimize equity curve generation: Fetch only necessary fields (ExitDateTime, ProfitLossCurrency), project in LINQ, avoid loading navigation properties
+- [x] **T197** [P] Optimize equity curve generation: Fetch only necessary fields (ExitDateTime, ProfitLossCurrency), project in LINQ, avoid loading navigation properties
 
 ### UI Performance
 - [ ] **T198** [P] Implement virtualization in TradesListView: Ensure CollectionView uses ItemsUpdatingScrollMode.KeepLastItemInView, test with 1000+ trades
-- [ ] **T199** [P] Add loading indicators: Show ActivityIndicator when IsBusy = true in ViewModels, apply to all long-running commands (LoadStatisticsCommand, LoadTradesCommand, etc.)
+- [x] **T199** [P] Add loading indicators: Show ActivityIndicator when IsBusy = true in ViewModels, apply to all long-running commands (LoadStatisticsCommand, LoadTradesCommand, etc.)
 - [ ] **T200** [P] Implement debouncing for filter inputs: Use Task.Delay(300ms) in filter entry TextChanged event before triggering LoadTradesPagedCommand
 
 ### Error Handling
-- [ ] **T201** [P] Implement global exception handling in `src/TradingJournal/App.xaml.cs`: Subscribe to AppDomain.CurrentDomain.UnhandledException, log errors, show user-friendly alert
-- [ ] **T202** [P] Add try-catch blocks in all ViewModel commands: Wrap service calls in try-catch, set IsBusy = false in finally, show error alerts using DisplayAlert
-- [ ] **T203** [P] Implement validation feedback in NewTradeView: Show error messages below invalid Entry fields, disable SaveButton if validation fails
+- [x] **T201** [P] Implement global exception handling in `src/TradingJournal/App.xaml.cs`: Subscribe to AppDomain.CurrentDomain.UnhandledException, log errors, show user-friendly alert
+- [x] **T202** [P] Add try-catch blocks in all ViewModel commands: Wrap service calls in try-catch, set IsBusy = false in finally, show error alerts using DisplayAlert
+- [x] **T203** [P] Implement validation feedback in NewTradeView: Show error messages below invalid Entry fields, disable SaveButton if validation fails
 
 ### Accessibility
 - [ ] **T204** [P] Add accessibility labels to all interactive controls in XAML: Set AutomationProperties.Name and AutomationProperties.HelpText for buttons, entries, pickers

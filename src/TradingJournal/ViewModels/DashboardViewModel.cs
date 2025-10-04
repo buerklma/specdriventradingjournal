@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -58,6 +59,13 @@ namespace TradingJournal.ViewModels
                 ProfitFactor = await _analyticsService.GetProfitFactorAsync();
                 AverageRMultiple = await _analyticsService.GetAverageRMultipleAsync();
                 MaxDrawdown = await _analyticsService.GetMaxDrawdownAsync();
+            }
+            catch (Exception ex)
+            {
+                await Shell.Current.DisplayAlert(
+                    "Error",
+                    $"Failed to load statistics: {ex.Message}",
+                    "OK");
             }
             finally
             {

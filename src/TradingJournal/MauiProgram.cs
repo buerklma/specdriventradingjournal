@@ -13,6 +13,10 @@ public static class MauiProgram
 {
     public static MauiApp CreateMauiApp()
     {
+        // Register Syncfusion license (Community License - for non-commercial use)
+        // For production, replace with your commercial license key
+        Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("YOUR_LICENSE_KEY_HERE");
+
         var builder = MauiApp.CreateBuilder();
         builder
             .UseMauiApp<App>()

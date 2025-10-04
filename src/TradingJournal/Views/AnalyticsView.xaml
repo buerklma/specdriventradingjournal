@@ -2,6 +2,7 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:viewmodels="clr-namespace:TradingJournal.ViewModels"
+             xmlns:chart="clr-namespace:Syncfusion.Maui.Charts;assembly=Syncfusion.Maui.Charts"
              x:Class="TradingJournal.Views.AnalyticsView"
              x:DataType="viewmodels:AnalyticsViewModel"
              Title="{Binding Title}">
@@ -34,19 +35,95 @@
                 </Grid>
             </Frame>
 
-            <!-- Placeholder for charts -->
-            <Frame Padding="20" BackgroundColor="{AppThemeBinding Light=#F5F5F5, Dark=#2C2C2C}" HeightRequest="300">
-                <Label Text="Equity Curve Chart (Syncfusion integration pending)"
-                       HorizontalOptions="Center"
-                       VerticalOptions="Center"
-                       TextColor="{AppThemeBinding Light=#999, Dark=#666}" />
+            <!-- Equity Curve Chart -->
+            <Frame Padding="10" BackgroundColor="{AppThemeBinding Light=#F5F5F5, Dark=#2C2C2C}" HeightRequest="350">
+                <VerticalStackLayout>
+                    <Label Text="Equity Curve" FontSize="16" FontAttributes="Bold" HorizontalOptions="Center" Margin="0,0,0,10" />
+                    <chart:SfCartesianChart>
+                        <chart:SfCartesianChart.XAxes>
+                            <chart:DateTimeAxis />
+                        </chart:SfCartesianChart.XAxes>
+
+                        <chart:SfCartesianChart.YAxes>
+                            <chart:NumericalAxis />
+                        </chart:SfCartesianChart.YAxes>
+
+                        <chart:SfCartesianChart.Series>
+                            <chart:LineSeries ItemsSource="{Binding EquityCurveData}"
+                                             XBindingPath="Item1"
+                                             YBindingPath="Item2"
+                                             Fill="#4CAF50"
+                                             StrokeWidth="2"
+                                             EnableTooltip="True"
+                                             Label="Equity">
+                            </chart:LineSeries>
+                        </chart:SfCartesianChart.Series>
+
+                        <chart:SfCartesianChart.Legend>
+                            <chart:ChartLegend />
+                        </chart:SfCartesianChart.Legend>
+                    </chart:SfCartesianChart>
+                </VerticalStackLayout>
             </Frame>
 
-            <Frame Padding="20" BackgroundColor="{AppThemeBinding Light=#F5F5F5, Dark=#2C2C2C}" HeightRequest="300">
-                <Label Text="R/R Distribution Chart (Syncfusion integration pending)"
-                       HorizontalOptions="Center"
-                       VerticalOptions="Center"
-                       TextColor="{AppThemeBinding Light=#999, Dark=#666}" />
+            <!-- R/R Distribution Chart -->
+            <Frame Padding="10" BackgroundColor="{AppThemeBinding Light=#F5F5F5, Dark=#2C2C2C}" HeightRequest="350">
+                <VerticalStackLayout>
+                    <Label Text="Risk/Reward Distribution" FontSize="16" FontAttributes="Bold" HorizontalOptions="Center" Margin="0,0,0,10" />
+                    <chart:SfCartesianChart>
+                        <chart:SfCartesianChart.XAxes>
+                            <chart:CategoryAxis />
+                        </chart:SfCartesianChart.XAxes>
+
+                        <chart:SfCartesianChart.YAxes>
+                            <chart:NumericalAxis />
+                        </chart:SfCartesianChart.YAxes>
+
+                        <chart:SfCartesianChart.Series>
+                            <chart:ColumnSeries ItemsSource="{Binding RrDistributionData}"
+                                               XBindingPath="Item1"
+                                               YBindingPath="Item2"
+                                               Fill="#2196F3"
+                                               EnableTooltip="True"
+                                               Label="Trades">
+                            </chart:ColumnSeries>
+                        </chart:SfCartesianChart.Series>
+
+                        <chart:SfCartesianChart.Legend>
+                            <chart:ChartLegend />
+                        </chart:SfCartesianChart.Legend>
+                    </chart:SfCartesianChart>
+                </VerticalStackLayout>
+            </Frame>
+
+            <!-- Performance by Setup Chart -->
+            <Frame Padding="10" BackgroundColor="{AppThemeBinding Light=#F5F5F5, Dark=#2C2C2C}" HeightRequest="350">
+                <VerticalStackLayout>
+                    <Label Text="Performance by Setup Type" FontSize="16" FontAttributes="Bold" HorizontalOptions="Center" Margin="0,0,0,10" />
+                    <chart:SfCartesianChart>
+                        <chart:SfCartesianChart.XAxes>
+                            <chart:CategoryAxis />
+                        </chart:SfCartesianChart.XAxes>
+
+                        <chart:SfCartesianChart.YAxes>
+                            <chart:NumericalAxis />
+                        </chart:SfCartesianChart.YAxes>
+
+                        <chart:SfCartesianChart.Series>
+                            <chart:ColumnSeries ItemsSource="{Binding PerformanceBySetupData}"
+                                               XBindingPath="Item1"
+                                               YBindingPath="Item2"
+                                               EnableTooltip="True"
+                                               Label="P/L"
+                                               Fill="#4CAF50">
+                            </chart:ColumnSeries>
+                        </chart:SfCartesianChart.Series>
+
+                        <chart:SfCartesianChart.Legend>
+                            <chart:ChartLegend />
+                        </chart:SfCartesianChart.Legend>
+                    </chart:SfCartesianChart>
+                </VerticalStackLayout>
             </Frame>
 
         </VerticalStackLayout>
