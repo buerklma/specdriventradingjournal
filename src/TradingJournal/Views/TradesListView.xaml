@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewmodels="clr-namespace:TradingJournal.ViewModels"
+             xmlns:models="clr-namespace:TradingJournal.Data.Models;assembly=TradingJournal.Data"
+             x:Class="TradingJournal.Views.TradesListView"
+             x:DataType="viewmodels:TradesListViewModel"
+             Title="{Binding Title}">
+
+    <Grid RowDefinitions="Auto,*,Auto" Padding="10">
+
+        <!-- Filter Section -->
+        <Frame Grid.Row="0" Padding="15" Margin="5" BackgroundColor="{AppThemeBinding Light=#F5F5F5, Dark=#2C2C2C}">
+            <VerticalStackLayout Spacing="10">
+                <Label Text="Filters" FontSize="18" FontAttributes="Bold" />
+
+                <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
+                    <Entry Grid.Column="0"
+                           Placeholder="Symbol (e.g., AAPL)"
+                           x:Name="SymbolFilter" />
+                    <Entry Grid.Column="1"
+                           Placeholder="Setup Type"
+                           x:Name="SetupTypeFilter" />
+                </Grid>
+
+                <HorizontalStackLayout Spacing="10" HorizontalOptions="End">
+                    <Button Text="Apply Filters"
+                            Command="{Binding LoadTradesPagedCommand}"
+                            WidthRequest="120" />
+                    <Button Text="Clear"
+                            Command="{Binding RefreshCommand}"
+                            WidthRequest="100" />
+                </HorizontalStackLayout>
+            </VerticalStackLayout>
+        </Frame>
+
+        <!-- Trades List -->
+        <CollectionView Grid.Row="1"
+                        ItemsSource="{Binding Trades}"
+                        SelectionMode="None"
+                        Margin="5">
+            <CollectionView.EmptyView>
+                <ContentView>
+                    <VerticalStackLayout HorizontalOptions="Center" VerticalOptions="Center" Spacing="10">
+                        <Label Text="No trades found"
+                               FontSize="20"
+                               TextColor="{AppThemeBinding Light=#999, Dark=#666}"
+                               HorizontalOptions="Center" />
+                        <Label Text="Create your first trade to get started"
+                               FontSize="14"
+                               TextColor="{AppThemeBinding Light=#999, Dark=#666}"
+                               HorizontalOptions="Center" />
+                    </VerticalStackLayout>
+                </ContentView>
+            </CollectionView.EmptyView>
+
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="models:Trade">
+                    <Frame Padding="15" Margin="5" HasShadow="True" CornerRadius="8">
+                        <Frame.GestureRecognizers>
+                            <TapGestureRecognizer
+                                Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:TradesListViewModel}}, Path=NavigateToTradeDetailCommand}"
+                                CommandParameter="{Binding Id}" />
+                        </Frame.GestureRecognizers>
+
+                        <Grid ColumnDefinitions="*,Auto" RowDefinitions="Auto,Auto,Auto" ColumnSpacing="10">
+
+                            <!-- Symbol and Direction -->
+                            <Label Grid.Row="0" Grid.Column="0"
+                                   Text="{Binding Symbol}"
+                                   FontSize="20"
+                                   FontAttributes="Bold" />
+                            <Label Grid.Row="0" Grid.Column="1"
+                                   Text="{Binding Direction}"
+                                   FontSize="16"
+                                   TextColor="{AppThemeBinding Light=#666, Dark=#AAA}" />
+
+                            <!-- Entry Info -->
+                            <Label Grid.Row="1" Grid.Column="0"
+                                   Text="{Binding EntryDateTime, StringFormat='Entry: {0:MMM dd, yyyy HH:mm}'}"
+                                   FontSize="14"
+                                   TextColor="{AppThemeBinding Light=#666, Dark=#AAA}" />
+                            <Label Grid.Row="1" Grid.Column="1"
+                                   Text="{Binding EntryPrice, StringFormat='@{0:F2}'}"
+                                   FontSize="14"
+                                   FontAttributes="Bold" />
+
+                            <!-- P/L -->
+                            <Label Grid.Row="2" Grid.Column="0"
+                                   Text="{Binding SetupType, StringFormat='Setup: {0}'}"
+                                   FontSize="12"
+                                   TextColor="{AppThemeBinding Light=#999, Dark=#666}" />
+                            <Label Grid.Row="2" Grid.Column="1"
+                                   Text="{Binding ProfitLossCurrency, StringFormat='P/L: ${0:N2}'}"
+                                   FontSize="16"
+                                   FontAttributes="Bold"
+                                   IsVisible="{Binding ProfitLossCurrency, Converter={StaticResource IsNotNullConverter}}" />
+
+                        </Grid>
+                    </Frame>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+        <!-- Pagination Controls -->
+        <Grid Grid.Row="2" ColumnDefinitions="Auto,*,Auto" Padding="10" Margin="5">
+            <Button Grid.Column="0"
+                    Text="Previous"
+                    Command="{Binding PreviousPageCommand}"
+                    IsEnabled="{Binding HasPreviousPage}"
+                    WidthRequest="100" />
+
+            <Label Grid.Column="1"
+                   Text="{Binding PageNumber, StringFormat='Page {0}'}"
+                   FontSize="16"
+                   HorizontalOptions="Center"
+                   VerticalOptions="Center" />
+
+            <Button Grid.Column="2"
+                    Text="Next"
+                    Command="{Binding NextPageCommand}"
+                    IsEnabled="{Binding HasNextPage}"
+                    WidthRequest="100" />
+        </Grid>
+
+    </Grid>
+
+</ContentPage>

@@ -169,96 +169,96 @@
 ## Phase 3.6: Core Implementation - Service Layer (ONLY after data layer tests passing)
 
 ### TradeService Implementation
-- [ ] **T105** Implement ITradeService interface in `src/TradingJournal/Services/TradeService.cs` with constructor injecting TradingDbContext
-- [ ] **T106** Implement TradeService.CreateTradeAsync: Generate Id, set timestamps, calculate PlannedRR using calculator, validate via TradeValidator, insert into DbContext, SaveChangesAsync
-- [ ] **T107** Implement TradeService.GetTradeByIdAsync: Query DbContext.Trades.Include(Adjustments).Include(Attachments).FirstOrDefaultAsync(id)
-- [ ] **T108** Implement TradeService.GetAllTradesAsync: Return DbContext.Trades.OrderByDescending(EntryDateTime).ToListAsync()
-- [ ] **T109** Implement TradeService.GetTradesBySymbolAsync: Filter DbContext.Trades.Where(Symbol == symbol, case-insensitive).ToListAsync()
-- [ ] **T110** Implement TradeService.GetTradesByDateRangeAsync: Filter DbContext.Trades.Where(EntryDateTime between startDate and endDate).ToListAsync()
-- [ ] **T111** Implement TradeService.GetTradesPagedAsync: Apply TradeFilter, calculate skip = (pageNumber - 1) * pageSize, return PagedResult with TotalCount from CountAsync
-- [ ] **T112** Implement TradeService.UpdateTradeAsync: Update entity properties, set UpdatedAt = DateTime.UtcNow, SaveChangesAsync, return updated trade
-- [ ] **T113** Implement TradeService.UpdateTradeExitAsync: Set ExitPrice/ExitDateTime, call calculator methods to set RealizedRR/ProfitLoss/HoldingTime, SaveChangesAsync
-- [ ] **T114** Implement TradeService.DeleteTradeAsync: Remove trade from DbContext, SaveChangesAsync (cascade deletes handled by EF Core)
-- [ ] **T115** Implement TradeService.AddAdjustmentAsync: Create ManagementAdjustment with generated Id, link to TradeId, validate datetime range, insert, SaveChangesAsync
-- [ ] **T116** Implement TradeService.GetAdjustmentsForTradeAsync: Query DbContext.ManagementAdjustments.Where(TradeId == tradeId).OrderBy(AdjustmentDateTime).ToListAsync()
-- [ ] **T117** Implement TradeService.AddAttachmentAsync: Copy file from filePath to %USERPROFILE%\Documents\TradingJournal\Screenshots\{tradeId}\{filename}, create Attachment record with metadata, SaveChangesAsync
-- [ ] **T118** Implement TradeService.GetAttachmentsForTradeAsync: Query DbContext.Attachments.Where(TradeId == tradeId).OrderBy(UploadedAt).ToListAsync()
-- [ ] **T119** Implement TradeService.DeleteAttachmentAsync: Retrieve attachment, delete file from filesystem using File.Delete(StoragePath), remove from DbContext, SaveChangesAsync
-- [ ] **T120** Implement TradeService.ValidateTradeAsync: Instantiate TradeValidator, call ValidateAsync, return ValidationResult with IsValid and Errors list
+- [x] **T105** Implement ITradeService interface in `src/TradingJournal/Services/TradeService.cs` with constructor injecting TradingDbContext
+- [x] **T106** Implement TradeService.CreateTradeAsync: Generate Id, set timestamps, calculate PlannedRR using calculator, validate via TradeValidator, insert into DbContext, SaveChangesAsync
+- [x] **T107** Implement TradeService.GetTradeByIdAsync: Query DbContext.Trades.Include(Adjustments).Include(Attachments).FirstOrDefaultAsync(id)
+- [x] **T108** Implement TradeService.GetAllTradesAsync: Return DbContext.Trades.OrderByDescending(EntryDateTime).ToListAsync()
+- [x] **T109** Implement TradeService.GetTradesBySymbolAsync: Filter DbContext.Trades.Where(Symbol == symbol, case-insensitive).ToListAsync()
+- [x] **T110** Implement TradeService.GetTradesByDateRangeAsync: Filter DbContext.Trades.Where(EntryDateTime between startDate and endDate).ToListAsync()
+- [x] **T111** Implement TradeService.GetTradesPagedAsync: Apply TradeFilter, calculate skip = (pageNumber - 1) * pageSize, return PagedResult with TotalCount from CountAsync
+- [x] **T112** Implement TradeService.UpdateTradeAsync: Update entity properties, set UpdatedAt = DateTime.UtcNow, SaveChangesAsync, return updated trade
+- [x] **T113** Implement TradeService.UpdateTradeExitAsync: Set ExitPrice/ExitDateTime, call calculator methods to set RealizedRR/ProfitLoss/HoldingTime, SaveChangesAsync
+- [x] **T114** Implement TradeService.DeleteTradeAsync: Remove trade from DbContext, SaveChangesAsync (cascade deletes handled by EF Core)
+- [x] **T115** Implement TradeService.AddAdjustmentAsync: Create ManagementAdjustment with generated Id, link to TradeId, validate datetime range, insert, SaveChangesAsync
+- [x] **T116** Implement TradeService.GetAdjustmentsForTradeAsync: Query DbContext.ManagementAdjustments.Where(TradeId == tradeId).OrderBy(AdjustmentDateTime).ToListAsync()
+- [x] **T117** Implement TradeService.AddAttachmentAsync: Copy file from filePath to %USERPROFILE%\Documents\TradingJournal\Screenshots\{tradeId}\{filename}, create Attachment record with metadata, SaveChangesAsync
+- [x] **T118** Implement TradeService.GetAttachmentsForTradeAsync: Query DbContext.Attachments.Where(TradeId == tradeId).OrderBy(UploadedAt).ToListAsync()
+- [x] **T119** Implement TradeService.DeleteAttachmentAsync: Retrieve attachment, delete file from filesystem using File.Delete(StoragePath), remove from DbContext, SaveChangesAsync
+- [x] **T120** Implement TradeService.ValidateTradeAsync: Instantiate TradeValidator, call ValidateAsync, return ValidationResult with IsValid and Errors list
 
 ### AnalyticsService Implementation
-- [ ] **T121** Implement IAnalyticsService interface in `src/TradingJournal/Services/AnalyticsService.cs` with constructor injecting TradingDbContext
-- [ ] **T122** Implement AnalyticsService.GetOverallStatisticsAsync: Query closed trades (ExitDateTime != null), calculate all TradingStatistics fields: WinRate, ProfitFactor, AvgRR, MaxDrawdown, etc.
-- [ ] **T123** Implement AnalyticsService.GetStatisticsBySetupTypeAsync: Filter trades by SetupType, call GetOverallStatisticsAsync logic for filtered set
-- [ ] **T124** Implement AnalyticsService.GetStatisticsBySymbolAsync: Filter trades by Symbol (case-insensitive), calculate statistics
-- [ ] **T125** Implement AnalyticsService.CalculateWinRateAsync: Count winning trades (ProfitLossCurrency > 0), divide by total closed trades, multiply by 100
-- [ ] **T126** Implement AnalyticsService.CalculateAverageRRRatioAsync: Sum RealizedRRRatio for all closed trades, divide by count
-- [ ] **T127** Implement AnalyticsService.CalculateProfitFactorAsync: Sum gross profits (P/L > 0), sum absolute gross losses (P/L < 0), divide profits by losses
-- [ ] **T128** Implement AnalyticsService.CalculateMaxDrawdownAsync: Build equity curve array, iterate to find peak-to-trough difference, calculate percentage, track start/end dates
-- [ ] **T129** Implement AnalyticsService.GetEquityCurveDataAsync: Order trades by ExitDateTime, calculate cumulative P/L after each trade, return List<EquityCurvePoint>
-- [ ] **T130** Implement AnalyticsService.GetRRDistributionDataAsync: Create buckets (<-5, -5 to -4, ..., >5), count trades in each bucket by RealizedRR, return List<RRDistributionBucket>
-- [ ] **T131** Implement AnalyticsService.GetPerformanceBySetupDataAsync: Group trades by SetupType, calculate stats per group (TotalTrades, WinRate, AvgRR, Total P/L), order by profitability
-- [ ] **T132** Implement AnalyticsService.GetMonthlyPerformanceDataAsync: Filter trades by year, group by month, sum P/L per month, return List<MonthlyPerformance>
-- [ ] **T133** Implement AnalyticsService.GetEmotionFrequencyAsync: Extract emotion field based on EmotionStage, count unique occurrences, return Dictionary<string, int> ordered by frequency
-- [ ] **T134** Implement AnalyticsService.GetAverageDisciplineScoreAsync: Filter trades with DisciplineScore != null, calculate average
-- [ ] **T135** Implement AnalyticsService.AnalyzeDisciplineCorrelationAsync: Group trades by DisciplineScore (1-10), calculate avg RR and win rate per group, return List<DisciplineCorrelation>
-- [ ] **T136** Implement AnalyticsService.GetTopMistakesAsync: Parse Trade.Mistakes field (split by comma/newline), count frequency, calculate avg P/L impact, return top N as List<MistakeFrequency>
-- [ ] **T137** Implement AnalyticsService.GetTopLessonsAsync: Parse Trade.LessonsLearned field, count frequency, return top N as List<LessonFrequency>
+- [x] **T121** Implement IAnalyticsService interface in `src/TradingJournal/Services/AnalyticsService.cs` with constructor injecting TradingDbContext
+- [x] **T122** Implement AnalyticsService.GetOverallStatisticsAsync: Query closed trades (ExitDateTime != null), calculate all TradingStatistics fields: WinRate, ProfitFactor, AvgRR, MaxDrawdown, etc.
+- [x] **T123** Implement AnalyticsService.GetStatisticsBySetupTypeAsync: Filter trades by SetupType, call GetOverallStatisticsAsync logic for filtered set
+- [x] **T124** Implement AnalyticsService.GetStatisticsBySymbolAsync: Filter trades by Symbol (case-insensitive), calculate statistics
+- [x] **T125** Implement AnalyticsService.CalculateWinRateAsync: Count winning trades (ProfitLossCurrency > 0), divide by total closed trades, multiply by 100
+- [x] **T126** Implement AnalyticsService.CalculateAverageRRRatioAsync: Sum RealizedRRRatio for all closed trades, divide by count
+- [x] **T127** Implement AnalyticsService.CalculateProfitFactorAsync: Sum gross profits (P/L > 0), sum absolute gross losses (P/L < 0), divide profits by losses
+- [x] **T128** Implement AnalyticsService.CalculateMaxDrawdownAsync: Build equity curve array, iterate to find peak-to-trough difference, calculate percentage, track start/end dates
+- [x] **T129** Implement AnalyticsService.GetEquityCurveDataAsync: Order trades by ExitDateTime, calculate cumulative P/L after each trade, return List<EquityCurvePoint>
+- [x] **T130** Implement AnalyticsService.GetRRDistributionDataAsync: Create buckets (<-5, -5 to -4, ..., >5), count trades in each bucket by RealizedRR, return List<RRDistributionBucket>
+- [x] **T131** Implement AnalyticsService.GetPerformanceBySetupDataAsync: Group trades by SetupType, calculate stats per group (TotalTrades, WinRate, AvgRR, Total P/L), order by profitability
+- [x] **T132** Implement AnalyticsService.GetMonthlyPerformanceDataAsync: Filter trades by year, group by month, sum P/L per month, return List<MonthlyPerformance>
+- [x] **T133** Implement AnalyticsService.GetEmotionFrequencyAsync: Extract emotion field based on EmotionStage, count unique occurrences, return Dictionary<string, int> ordered by frequency
+- [x] **T134** Implement AnalyticsService.GetAverageDisciplineScoreAsync: Filter trades with DisciplineScore != null, calculate average
+- [x] **T135** Implement AnalyticsService.AnalyzeDisciplineCorrelationAsync: Group trades by DisciplineScore (1-10), calculate avg RR and win rate per group, return List<DisciplineCorrelation>
+- [x] **T136** Implement AnalyticsService.GetTopMistakesAsync: Parse Trade.Mistakes field (split by comma/newline), count frequency, calculate avg P/L impact, return top N as List<MistakeFrequency>
+- [x] **T137** Implement AnalyticsService.GetTopLessonsAsync: Parse Trade.LessonsLearned field, count frequency, return top N as List<LessonFrequency>
 
 ### ExportService Implementation
-- [ ] **T138** Implement IExportService interface in `src/TradingJournal/Services/ExportService.cs` with constructor injecting TradingDbContext and IConfiguration (for paths)
-- [ ] **T139** Implement ExportService.ExportToCsvAsync: Use CsvHelper library, write header row, iterate trades and write rows with proper escaping, return outputPath
-- [ ] **T140** Implement ExportService.ExportToExcelAsync: Use ClosedXML library, create Trades worksheet with data, create Summary worksheet with statistics
-- [ ] **T141** Implement ExportService.ExportToExcelAsync chart support: If includeCharts=true, add Charts worksheet, use ClosedXML charting to embed equity curve and R/R distribution
-- [ ] **T142** Implement ExportService.ExportToPdfAsync: Use QuestPDF, create Document with Cover page (title, date range), Summary page (statistics), Charts page (Syncfusion chart images), Recent Trades table, generate PDF
-- [ ] **T143** Implement ExportService.CreateBackupAsync: Create ZIP using System.IO.Compression, add %LOCALAPPDATA%\TradingJournal\tradingjournal.db to ZIP, add Screenshots folder recursively
-- [ ] **T144** Add backup-info.json to CreateBackupAsync: Serialize JSON with fields: BackupDate (DateTime.UtcNow), TradeCount, AppVersion (from Assembly), write to ZIP
-- [ ] **T145** Implement ExportService.RestoreFromBackupAsync: Extract ZIP to temp folder, validate backup-info.json exists, copy tradingjour nal.db to %LOCALAPPDATA%\TradingJournal\, restore Screenshots folder
-- [ ] **T146** Add overwriteExisting logic to RestoreFromBackupAsync: If false, check if database exists and has records, throw InvalidOperationException if data present
-- [ ] **T147** Implement ExportService.ImportFromCsvAsync: Use CsvHelper with CsvMappingProfile, read CSV, map columns to Trade properties, validate each row via TradeValidator
-- [ ] **T148** Add error handling to ImportFromCsvAsync: Catch validation errors per row, skip invalid rows, add error messages to ImportResult.Errors, continue processing
+- [x] **T138** Implement IExportService interface in `src/TradingJournal/Services/ExportService.cs` with constructor injecting TradingDbContext and IConfiguration (for paths)
+- [x] **T139** Implement ExportService.ExportToCsvAsync: Use CsvHelper library, write header row, iterate trades and write rows with proper escaping, return outputPath
+- [x] **T140** Implement ExportService.ExportToExcelAsync: Use ClosedXML library, create Trades worksheet with data, create Summary worksheet with statistics
+- [x] **T141** Implement ExportService.ExportToExcelAsync chart support: If includeCharts=true, add Charts worksheet, use ClosedXML charting to embed equity curve and R/R distribution
+- [x] **T142** Implement ExportService.ExportToPdfAsync: Use QuestPDF, create Document with Cover page (title, date range), Summary page (statistics), Charts page (Syncfusion chart images), Recent Trades table, generate PDF
+- [x] **T143** Implement ExportService.CreateBackupAsync: Create ZIP using System.IO.Compression, add %LOCALAPPDATA%\TradingJournal\tradingjournal.db to ZIP, add Screenshots folder recursively
+- [x] **T144** Add backup-info.json to CreateBackupAsync: Serialize JSON with fields: BackupDate (DateTime.UtcNow), TradeCount, AppVersion (from Assembly), write to ZIP
+- [x] **T145** Implement ExportService.RestoreFromBackupAsync: Extract ZIP to temp folder, validate backup-info.json exists, copy tradingjour nal.db to %LOCALAPPDATA%\TradingJournal\, restore Screenshots folder
+- [x] **T146** Add overwriteExisting logic to RestoreFromBackupAsync: If false, check if database exists and has records, throw InvalidOperationException if data present
+- [x] **T147** Implement ExportService.ImportFromCsvAsync: Use CsvHelper with CsvMappingProfile, read CSV, map columns to Trade properties, validate each row via TradeValidator
+- [x] **T148** Add error handling to ImportFromCsvAsync: Catch validation errors per row, skip invalid rows, add error messages to ImportResult.Errors, continue processing
 
 ---
 
 ## Phase 3.6: Core Implementation - ViewModels (MVVM)
 
 ### Base ViewModel
-- [ ] **T149** [P] Implement BaseViewModel in `src/TradingJournal/ViewModels/BaseViewModel.cs` inheriting from ObservableObject (CommunityToolkit.Mvvm), add IsBusy property, Title property
+- [x] **T149** [P] Implement BaseViewModel in `src/TradingJournal/ViewModels/BaseViewModel.cs` inheriting from ObservableObject (CommunityToolkit.Mvvm), add IsBusy property, Title property
 
 ### Main ViewModels
-- [ ] **T150** [P] Implement DashboardViewModel in `src/TradingJournal/ViewModels/DashboardViewModel.cs` with properties: TotalTrades, WinRate, TotalProfitLoss, LoadStatisticsCommand (calls IAnalyticsService.GetOverallStatisticsAsync)
-- [ ] **T151** [P] Implement TradesListViewModel in `src/TradingJournal/ViewModels/TradesListViewModel.cs` with properties: ObservableCollection<Trade> Trades, TradeFilter CurrentFilter, LoadTradesPagedCommand, NavigateToTradeDetailCommand
-- [ ] **T152** [P] Implement TradeDetailViewModel in `src/TradingJournal/ViewModels/TradeDetailViewModel.cs` with properties: Trade CurrentTrade, LoadTradeCommand(Guid id), SaveTradeCommand, DeleteTradeCommand
-- [ ] **T153** [P] Implement NewTradeViewModel in `src/TradingJournal/ViewModels/NewTradeViewModel.cs` with properties: All Trade input fields, CalculatePlannedRRCommand (auto-updates PlannedRR on price changes), CreateTradeCommand (calls TradeService.CreateTradeAsync)
-- [ ] **T154** [P] Implement PsychologyViewModel in `src/TradingJournal/ViewModels/PsychologyViewModel.cs` with properties: EmotionAtEntry, EmotionDuringTrade, EmotionAtExit, DisciplineScore, Notes, SavePsychologyCommand
-- [ ] **T155** [P] Implement ReviewViewModel in `src/TradingJournal/ViewModels/ReviewViewModel.cs` with properties: QualityRating, Mistakes, LessonsLearned, SaveReviewCommand
-- [ ] **T156** [P] Implement AnalyticsViewModel in `src/TradingJournal/ViewModels/AnalyticsViewModel.cs` with properties: EquityCurveData, RRDistributionData, PerformanceBySetupData, LoadAnalyticsCommand
-- [ ] **T157** [P] Implement ExportViewModel in `src/TradingJournal/ViewModels/ExportViewModel.cs` with commands: ExportToCsvCommand, ExportToExcelCommand, ExportToPdfCommand, CreateBackupCommand, RestoreBackupCommand
-- [ ] **T158** [P] Implement SettingsViewModel in `src/TradingJournal/ViewModels/SettingsViewModel.cs` with properties: Theme (bound to UserPreferences.Theme), DefaultCurrency, DefaultRiskPercentage, SaveSettingsCommand
+- [x] **T150** [P] Implement DashboardViewModel in `src/TradingJournal/ViewModels/DashboardViewModel.cs` with properties: TotalTrades, WinRate, TotalProfitLoss, LoadStatisticsCommand (calls IAnalyticsService.GetOverallStatisticsAsync)
+- [x] **T151** [P] Implement TradesListViewModel in `src/TradingJournal/ViewModels/TradesListViewModel.cs` with properties: ObservableCollection<Trade> Trades, TradeFilter CurrentFilter, LoadTradesPagedCommand, NavigateToTradeDetailCommand
+- [x] **T152** [P] Implement TradeDetailViewModel in `src/TradingJournal/ViewModels/TradeDetailViewModel.cs` with properties: Trade CurrentTrade, LoadTradeCommand(Guid id), SaveTradeCommand, DeleteTradeCommand
+- [x] **T153** [P] Implement NewTradeViewModel in `src/TradingJournal/ViewModels/NewTradeViewModel.cs` with properties: All Trade input fields, CalculatePlannedRRCommand (auto-updates PlannedRR on price changes), CreateTradeCommand (calls TradeService.CreateTradeAsync)
+- [x] **T154** [P] Implement PsychologyViewModel in `src/TradingJournal/ViewModels/PsychologyViewModel.cs` with properties: EmotionAtEntry, EmotionDuringTrade, EmotionAtExit, DisciplineScore, Notes, SavePsychologyCommand
+- [x] **T155** [P] Implement ReviewViewModel in `src/TradingJournal/ViewModels/ReviewViewModel.cs` with properties: QualityRating, Mistakes, LessonsLearned, SaveReviewCommand
+- [x] **T156** [P] Implement AnalyticsViewModel in `src/TradingJournal/ViewModels/AnalyticsViewModel.cs` with properties: EquityCurveData, RRDistributionData, PerformanceBySetupData, LoadAnalyticsCommand
+- [x] **T157** [P] Implement ExportViewModel in `src/TradingJournal/ViewModels/ExportViewModel.cs` with commands: ExportToCsvCommand, ExportToExcelCommand, ExportToPdfCommand, CreateBackupCommand, RestoreBackupCommand
+- [x] **T158** [P] Implement SettingsViewModel in `src/TradingJournal/ViewModels/SettingsViewModel.cs` with properties: Theme (bound to UserPreferences.Theme), DefaultCurrency, DefaultRiskPercentage, SaveSettingsCommand
 
 ### Additional ViewModels
-- [ ] **T159** [P] Implement AttachmentsViewModel in `src/TradingJournal/ViewModels/AttachmentsViewModel.cs` with properties: ObservableCollection<Attachment> Attachments, AddAttachmentCommand (opens file picker), DeleteAttachmentCommand
-- [ ] **T160** [P] Implement AdjustmentsViewModel in `src/TradingJournal/ViewModels/AdjustmentsViewModel.cs` with properties: ObservableCollection<ManagementAdjustment> Adjustments, AddAdjustmentCommand, LoadAdjustmentsCommand
+- [x] **T159** [P] Implement AttachmentsViewModel in `src/TradingJournal/ViewModels/AttachmentsViewModel.cs` with properties: ObservableCollection<Attachment> Attachments, AddAttachmentCommand (opens file picker), DeleteAttachmentCommand
+- [x] **T160** [P] Implement AdjustmentsViewModel in `src/TradingJournal/ViewModels/AdjustmentsViewModel.cs` with properties: ObservableCollection<ManagementAdjustment> Adjustments, AddAdjustmentCommand, LoadAdjustmentsCommand
 
 ---
 
 ## Phase 3.8: Core Implementation - Views (XAML)
 
 ### Main Views
-- [ ] **T161** [P] Create DashboardView in `src/TradingJournal/Views/DashboardView.xaml` with layout: Grid with 4 summary cards (Total Trades, Win Rate, Total P/L, Max Drawdown), RefreshButton bound to LoadStatisticsCommand
-- [ ] **T162** [P] Create TradesListView in `src/TradingJournal/Views/TradesListView.xaml` with CollectionView bound to Trades, filter UI (Entry fields for Symbol, Date Range, Setup Type), NewTradeButton
-- [ ] **T163** [P] Create TradeDetailView in `src/TradingJournal/Views/TradeDetailView.xaml` with layout: ScrollView containing all trade details (read-only labels for closed trades, editable entries for open trades), EditButton, DeleteButton
-- [ ] **T164** [P] Create NewTradeView in `src/TradingJournal/Views/NewTradeView.xaml` with form layout: Entry fields for all Trade properties, Picker for Direction, DatePicker + TimePicker for EntryDateTime, SaveButton bound to CreateTradeCommand, CancelButton
-- [ ] **T165** [P] Create PsychologyView in `src/TradingJournal/Views/PsychologyView.xaml` embedded in TradeDetailView or separate tab: Entry fields for emotions (Entry/During/Exit), Slider for DisciplineScore (1-10), Editor for Notes
-- [ ] **T166** [P] Create ReviewView in `src/TradingJournal/Views/ReviewView.xaml` embedded in TradeDetailView: Slider for QualityRating (1-10), Editor for Mistakes (multiline), Editor for LessonsLearned (multiline), SaveButton
-- [ ] **T167** [P] Create AnalyticsView in `src/TradingJournal/Views/AnalyticsView.xaml` with layout: ScrollView containing Syncfusion charts: EquityCurve (LineSeries), RRDistribution (ColumnSeries), PerformanceBySetup (BarSeries), RefreshButton
-- [ ] **T168** [P] Create ExportView in `src/TradingJournal/Views/ExportView.xaml` with button layout: ExportToCsvButton, ExportToExcelButton, ExportToPdfButton, CreateBackupButton, RestoreBackupButton, each bound to respective commands
-- [ ] **T169** [P] Create SettingsView in `src/TradingJournal/Views/SettingsView.xaml` with form layout: Picker for Theme (Light/Dark/System), Entry for DefaultCurrency, Entry for DefaultRiskPercentage, SaveButton
-- [ ] **T170** [P] Create MainPage (Shell) in `src/TradingJournal/AppShell.xaml` with FlyoutMenu: Dashboard, Trades, Analytics, Export, Settings menu items, define routes for navigation
+- [x] **T161** [P] Create DashboardView in `src/TradingJournal/Views/DashboardView.xaml` with layout: Grid with 4 summary cards (Total Trades, Win Rate, Total P/L, Max Drawdown), RefreshButton bound to LoadStatisticsCommand
+- [x] **T162** [P] Create TradesListView in `src/TradingJournal/Views/TradesListView.xaml` with CollectionView bound to Trades, filter UI (Entry fields for Symbol, Date Range, Setup Type), NewTradeButton
+- [x] **T163** [P] Create TradeDetailView in `src/TradingJournal/Views/TradeDetailView.xaml` with layout: ScrollView containing all trade details (read-only labels for closed trades, editable entries for open trades), EditButton, DeleteButton
+- [x] **T164** [P] Create NewTradeView in `src/TradingJournal/Views/NewTradeView.xaml` with form layout: Entry fields for all Trade properties, Picker for Direction, DatePicker + TimePicker for EntryDateTime, SaveButton bound to CreateTradeCommand, CancelButton
+- [x] **T165** [P] Create PsychologyView in `src/TradingJournal/Views/PsychologyView.xaml` embedded in TradeDetailView or separate tab: Entry fields for emotions (Entry/During/Exit), Slider for DisciplineScore (1-10), Editor for Notes
+- [x] **T166** [P] Create ReviewView in `src/TradingJournal/Views/ReviewView.xaml` embedded in TradeDetailView: Slider for QualityRating (1-10), Editor for Mistakes (multiline), Editor for LessonsLearned (multiline), SaveButton
+- [x] **T167** [P] Create AnalyticsView in `src/TradingJournal/Views/AnalyticsView.xaml` with layout: ScrollView containing Syncfusion charts: EquityCurve (LineSeries), RRDistribution (ColumnSeries), PerformanceBySetup (BarSeries), RefreshButton
+- [x] **T168** [P] Create ExportView in `src/TradingJournal/Views/ExportView.xaml` with button layout: ExportToCsvButton, ExportToExcelButton, ExportToPdfButton, CreateBackupButton, RestoreBackupButton, each bound to respective commands
+- [x] **T169** [P] Create SettingsView in `src/TradingJournal/Views/SettingsView.xaml` with form layout: Picker for Theme (Light/Dark/System), Entry for DefaultCurrency, Entry for DefaultRiskPercentage, SaveButton
+- [x] **T170** [P] Create MainPage (Shell) in `src/TradingJournal/AppShell.xaml` with FlyoutMenu: Dashboard, Trades, Analytics, Export, Settings menu items, define routes for navigation
 
 ### Supporting Views
-- [ ] **T171** [P] Create AttachmentsView in `src/TradingJournal/Views/AttachmentsView.xaml` embedded in TradeDetailView: CollectionView of Attachment thumbnails, AddButton (opens file picker), DeleteButton per attachment
-- [ ] **T172** [P] Create AdjustmentsView in `src/TradingJournal/Views/AdjustmentsView.xaml` embedded in TradeDetailView: ListView of ManagementAdjustment records, AddAdjustmentButton, shows AdjustmentType, DateTime, NewValue
+- [x] **T171** [P] Create AttachmentsView in `src/TradingJournal/Views/AttachmentsView.xaml` embedded in TradeDetailView: CollectionView of Attachment thumbnails, AddButton (opens file picker), DeleteButton per attachment
+- [x] **T172** [P] Create AdjustmentsView in `src/TradingJournal/Views/AdjustmentsView.xaml` embedded in TradeDetailView: ListView of ManagementAdjustment records, AddAdjustmentButton, shows AdjustmentType, DateTime, NewValue
 
 ---
 

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewmodels="clr-namespace:TradingJournal.ViewModels"
+             x:Class="TradingJournal.Views.ReviewView"
+             x:DataType="viewmodels:ReviewViewModel"
+             Title="{Binding Title}">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="20">
+
+            <Label Text="Trade Review" FontSize="28" FontAttributes="Bold" HorizontalOptions="Center" />
+
+            <!-- Quality Rating -->
+            <Frame Padding="20" BackgroundColor="{AppThemeBinding Light=#F5F5F5, Dark=#2C2C2C}">
+                <VerticalStackLayout Spacing="15">
+                    <Label Text="Trade Quality" FontSize="20" FontAttributes="Bold" />
+
+                    <Label Text="{Binding QualityRating, StringFormat='Quality Rating: {0}/10'}" FontAttributes="Bold" />
+                    <Slider Minimum="1" Maximum="10" Value="{Binding QualityRating}" />
+
+                    <Label Text="1 = Poor execution, 10 = Perfect execution" FontSize="12" TextColor="Gray" />
+                </VerticalStackLayout>
+            </Frame>
+
+            <!-- Mistakes -->
+            <Frame Padding="20" BackgroundColor="{AppThemeBinding Light=#F5F5F5, Dark=#2C2C2C}">
+                <VerticalStackLayout Spacing="15">
+                    <Label Text="Mistakes Made" FontSize="20" FontAttributes="Bold" />
+
+                    <Editor Text="{Binding Mistakes}"
+                            Placeholder="What went wrong? Entry timing, position sizing, rule violations..."
+                            HeightRequest="120" />
+                </VerticalStackLayout>
+            </Frame>
+
+            <!-- Lessons Learned -->
+            <Frame Padding="20" BackgroundColor="{AppThemeBinding Light=#F5F5F5, Dark=#2C2C2C}">
+                <VerticalStackLayout Spacing="15">
+                    <Label Text="Lessons Learned" FontSize="20" FontAttributes="Bold" />
+
+                    <Editor Text="{Binding LessonsLearned}"
+                            Placeholder="Key takeaways, what to improve, pattern recognition..."
+                            HeightRequest="120" />
+                </VerticalStackLayout>
+            </Frame>
+
+            <!-- Save Button -->
+            <Button Text="Save Review"
+                    Command="{Binding SaveReviewCommand}"
+                    BackgroundColor="#4CAF50"
+                    Margin="0,20,0,0" />
+
+        </VerticalStackLayout>
+    </ScrollView>
+
+</ContentPage>

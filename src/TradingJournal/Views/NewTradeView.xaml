@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewmodels="clr-namespace:TradingJournal.ViewModels"
+             x:Class="TradingJournal.Views.NewTradeView"
+             x:DataType="viewmodels:NewTradeViewModel"
+             Title="{Binding Title}">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="15">
+
+            <Label Text="New Trade" FontSize="28" FontAttributes="Bold" HorizontalOptions="Center" />
+
+            <!-- Symbol -->
+            <Entry Placeholder="Symbol (e.g., AAPL, EURUSD)" Text="{Binding Symbol}" />
+
+            <!-- Direction -->
+            <Picker Title="Direction" SelectedItem="{Binding Direction}">
+                <Picker.ItemsSource>
+                    <x:Array Type="{x:Type x:String}">
+                        <x:String>Long</x:String>
+                        <x:String>Short</x:String>
+                    </x:Array>
+                </Picker.ItemsSource>
+            </Picker>
+
+            <!-- Entry Date and Time -->
+            <Label Text="Entry Date &amp; Time" FontAttributes="Bold" />
+            <DatePicker Date="{Binding EntryDateTime}" />
+            <TimePicker Time="{Binding EntryDateTime, Converter={StaticResource DateTimeToTimeSpanConverter}}" />
+
+            <!-- Prices -->
+            <Label Text="Entry Price" FontAttributes="Bold" />
+            <Entry Placeholder="Entry Price" Text="{Binding EntryPrice}" Keyboard="Numeric" />
+
+            <Label Text="Stop Loss" FontAttributes="Bold" />
+            <Entry Placeholder="Stop Loss" Text="{Binding StopLoss}" Keyboard="Numeric" />
+
+            <Label Text="Take Profit" FontAttributes="Bold" />
+            <Entry Placeholder="Take Profit" Text="{Binding TakeProfit}" Keyboard="Numeric" />
+
+            <!-- Position Size -->
+            <Label Text="Position Size" FontAttributes="Bold" />
+            <Entry Placeholder="Position Size" Text="{Binding PositionSize}" Keyboard="Numeric" />
+
+            <!-- Risk Percentage -->
+            <Label Text="Risk Percentage (%)" FontAttributes="Bold" />
+            <Entry Placeholder="Risk %" Text="{Binding RiskPercentage}" Keyboard="Numeric" />
+
+            <!-- Planned R:R (Display Only) -->
+            <Frame Padding="15" BackgroundColor="{AppThemeBinding Light=#E8F5E9, Dark=#1B5E20}">
+                <HorizontalStackLayout Spacing="10">
+                    <Label Text="Planned R:R:" FontSize="18" FontAttributes="Bold" />
+                    <Label Text="{Binding PlannedRR, StringFormat='{0:F2}R'}" FontSize="18" FontAttributes="Bold" TextColor="#4CAF50" />
+                </HorizontalStackLayout>
+            </Frame>
+
+            <!-- Additional Fields -->
+            <Label Text="Timeframe" FontAttributes="Bold" />
+            <Entry Placeholder="Timeframe (e.g., 4H, Daily)" Text="{Binding Timeframe}" />
+
+            <Label Text="Setup Type" FontAttributes="Bold" />
+            <Entry Placeholder="Setup Type (e.g., Breakout, Pullback)" Text="{Binding SetupType}" />
+
+            <Label Text="Market Structure (Optional)" FontAttributes="Bold" />
+            <Entry Placeholder="Market Structure" Text="{Binding MarketStructure}" />
+
+            <Label Text="Notes (Optional)" FontAttributes="Bold" />
+            <Editor Placeholder="Trade notes..." Text="{Binding Notes}" HeightRequest="100" />
+
+            <!-- Buttons -->
+            <Grid ColumnDefinitions="*,*" ColumnSpacing="10" Margin="0,20,0,0">
+                <Button Grid.Column="0"
+                        Text="Create Trade"
+                        Command="{Binding CreateTradeCommand}"
+                        BackgroundColor="#4CAF50" />
+                <Button Grid.Column="1"
+                        Text="Cancel"
+                        Command="{Binding CancelCommand}"
+                        BackgroundColor="#F44336" />
+            </Grid>
+
+        </VerticalStackLayout>
+    </ScrollView>
+
+</ContentPage>

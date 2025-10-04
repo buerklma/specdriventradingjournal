@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewmodels="clr-namespace:TradingJournal.ViewModels"
+             x:Class="TradingJournal.Views.PsychologyView"
+             x:DataType="viewmodels:PsychologyViewModel"
+             Title="{Binding Title}">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="20">
+
+            <Label Text="Trading Psychology" FontSize="28" FontAttributes="Bold" HorizontalOptions="Center" />
+
+            <!-- Emotions -->
+            <Frame Padding="20" BackgroundColor="{AppThemeBinding Light=#F5F5F5, Dark=#2C2C2C}">
+                <VerticalStackLayout Spacing="15">
+                    <Label Text="Emotional State" FontSize="20" FontAttributes="Bold" />
+
+                    <Label Text="Emotion at Entry" FontAttributes="Bold" />
+                    <Entry Text="{Binding EmotionAtEntry}" Placeholder="e.g., Confident, Anxious, Calm..." />
+
+                    <Label Text="Emotion During Trade" FontAttributes="Bold" />
+                    <Entry Text="{Binding EmotionDuringTrade}" Placeholder="e.g., Patient, Fearful, Excited..." />
+
+                    <Label Text="Emotion at Exit" FontAttributes="Bold" />
+                    <Entry Text="{Binding EmotionAtExit}" Placeholder="e.g., Satisfied, Disappointed, Relieved..." />
+                </VerticalStackLayout>
+            </Frame>
+
+            <!-- Discipline Score -->
+            <Frame Padding="20" BackgroundColor="{AppThemeBinding Light=#F5F5F5, Dark=#2C2C2C}">
+                <VerticalStackLayout Spacing="15">
+                    <Label Text="Discipline" FontSize="20" FontAttributes="Bold" />
+
+                    <Label Text="{Binding DisciplineScore, StringFormat='Discipline Score: {0}/10'}" FontAttributes="Bold" />
+                    <Slider Minimum="1" Maximum="10" Value="{Binding DisciplineScore}" />
+
+                    <Label Text="1 = Poor discipline, 10 = Perfect discipline" FontSize="12" TextColor="Gray" />
+                </VerticalStackLayout>
+            </Frame>
+
+            <!-- Notes -->
+            <Frame Padding="20" BackgroundColor="{AppThemeBinding Light=#F5F5F5, Dark=#2C2C2C}">
+                <VerticalStackLayout Spacing="15">
+                    <Label Text="Additional Notes" FontSize="20" FontAttributes="Bold" />
+
+                    <Editor Text="{Binding Notes}"
+                            Placeholder="Mental state, distractions, stress level, focus quality..."
+                            HeightRequest="100" />
+                </VerticalStackLayout>
+            </Frame>
+
+            <!-- Save Button -->
+            <Button Text="Save Psychology Notes"
+                    Command="{Binding SavePsychologyCommand}"
+                    BackgroundColor="#4CAF50"
+                    Margin="0,20,0,0" />
+
+        </VerticalStackLayout>
+    </ScrollView>
+
+</ContentPage>

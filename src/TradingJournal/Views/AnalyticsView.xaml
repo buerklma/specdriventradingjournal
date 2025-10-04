@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewmodels="clr-namespace:TradingJournal.ViewModels"
+             x:Class="TradingJournal.Views.AnalyticsView"
+             x:DataType="viewmodels:AnalyticsViewModel"
+             Title="{Binding Title}">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="20">
+
+            <Label Text="Analytics" FontSize="28" FontAttributes="Bold" HorizontalOptions="Center" />
+
+            <Button Text="Load Analytics"
+                    Command="{Binding LoadAnalyticsCommand}"
+                    HorizontalOptions="Center" />
+
+            <ActivityIndicator IsRunning="{Binding IsBusy}" IsVisible="{Binding IsBusy}" />
+
+            <!-- Performance Metrics -->
+            <Frame Padding="15" BackgroundColor="{AppThemeBinding Light=#F5F5F5, Dark=#2C2C2C}">
+                <Grid ColumnDefinitions="*,*" RowDefinitions="Auto,Auto,Auto,Auto" RowSpacing="10">
+                    <Label Grid.Row="0" Grid.Column="0" Text="Win Rate:" FontAttributes="Bold" />
+                    <Label Grid.Row="0" Grid.Column="1" Text="{Binding WinRate, StringFormat='{0:F2}%'}" />
+
+                    <Label Grid.Row="1" Grid.Column="0" Text="Profit Factor:" FontAttributes="Bold" />
+                    <Label Grid.Row="1" Grid.Column="1" Text="{Binding ProfitFactor, StringFormat='{0:F2}'}" />
+
+                    <Label Grid.Row="2" Grid.Column="0" Text="Avg R-Multiple:" FontAttributes="Bold" />
+                    <Label Grid.Row="2" Grid.Column="1" Text="{Binding AverageRMultiple, StringFormat='{0:F2}R'}" />
+
+                    <Label Grid.Row="3" Grid.Column="0" Text="Max Drawdown:" FontAttributes="Bold" />
+                    <Label Grid.Row="3" Grid.Column="1" Text="{Binding MaxDrawdown, StringFormat='{0:F2}%'}" />
+                </Grid>
+            </Frame>
+
+            <!-- Placeholder for charts -->
+            <Frame Padding="20" BackgroundColor="{AppThemeBinding Light=#F5F5F5, Dark=#2C2C2C}" HeightRequest="300">
+                <Label Text="Equity Curve Chart (Syncfusion integration pending)"
+                       HorizontalOptions="Center"
+                       VerticalOptions="Center"
+                       TextColor="{AppThemeBinding Light=#999, Dark=#666}" />
+            </Frame>
+
+            <Frame Padding="20" BackgroundColor="{AppThemeBinding Light=#F5F5F5, Dark=#2C2C2C}" HeightRequest="300">
+                <Label Text="R/R Distribution Chart (Syncfusion integration pending)"
+                       HorizontalOptions="Center"
+                       VerticalOptions="Center"
+                       TextColor="{AppThemeBinding Light=#999, Dark=#666}" />
+            </Frame>
+
+        </VerticalStackLayout>
+    </ScrollView>
+
+</ContentPage>

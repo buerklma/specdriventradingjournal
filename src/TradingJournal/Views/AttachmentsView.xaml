@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewmodels="clr-namespace:TradingJournal.ViewModels"
+             xmlns:models="clr-namespace:TradingJournal.Data.Models;assembly=TradingJournal.Data"
+             x:Class="TradingJournal.Views.AttachmentsView"
+             x:DataType="viewmodels:AttachmentsViewModel"
+             Title="{Binding Title}">
+
+    <Grid Padding="20" RowDefinitions="Auto,*,Auto" RowSpacing="20">
+
+        <!-- Header -->
+        <Label Text="Trade Attachments"
+               FontSize="28"
+               FontAttributes="Bold"
+               HorizontalOptions="Center"
+               Grid.Row="0" />
+
+        <!-- Attachments List -->
+        <Frame Padding="0"
+               BackgroundColor="{AppThemeBinding Light=#F5F5F5, Dark=#2C2C2C}"
+               Grid.Row="1">
+            <CollectionView ItemsSource="{Binding Attachments}">
+                <CollectionView.EmptyView>
+                    <Label Text="No attachments yet. Add screenshots or charts."
+                           TextColor="Gray"
+                           HorizontalOptions="Center"
+                           VerticalOptions="Center"
+                           Margin="20" />
+                </CollectionView.EmptyView>
+
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="models:Attachment">
+                        <Frame Padding="15" Margin="10" BackgroundColor="{AppThemeBinding Light=White, Dark=#1E1E1E}">
+                            <Grid ColumnDefinitions="*,Auto" ColumnSpacing="15">
+                                <VerticalStackLayout Grid.Column="0" Spacing="5">
+                                    <Label Text="{Binding FileName}" FontAttributes="Bold" />
+                                    <Label Text="{Binding FileType}" FontSize="12" TextColor="Gray" />
+                                    <Label Text="{Binding UploadedAt, StringFormat='{0:MMM dd, yyyy HH:mm}'}"
+                                           FontSize="12"
+                                           TextColor="Gray" />
+                                </VerticalStackLayout>
+
+                                <Button Text="Delete"
+                                        Grid.Column="1"
+                                        BackgroundColor="#F44336"
+                                        VerticalOptions="Center"
+                                        Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:AttachmentsViewModel}}, Path=DeleteAttachmentCommand}"
+                                        CommandParameter="{Binding Id}" />
+                            </Grid>
+                        </Frame>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </Frame>
+
+        <!-- Add Button -->
+        <Button Text="Add Attachment"
+                Command="{Binding AddAttachmentCommand}"
+                BackgroundColor="#4CAF50"
+                Grid.Row="2" />
+
+    </Grid>
+
+</ContentPage>

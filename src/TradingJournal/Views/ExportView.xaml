@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewmodels="clr-namespace:TradingJournal.ViewModels"
+             x:Class="TradingJournal.Views.ExportView"
+             x:DataType="viewmodels:ExportViewModel"
+             Title="{Binding Title}">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="20">
+
+            <Label Text="Export &amp; Backup" FontSize="28" FontAttributes="Bold" HorizontalOptions="Center" />
+
+            <!-- Export Section -->
+            <Frame Padding="20" BackgroundColor="{AppThemeBinding Light=#F5F5F5, Dark=#2C2C2C}">
+                <VerticalStackLayout Spacing="15">
+                    <Label Text="Export Data" FontSize="20" FontAttributes="Bold" />
+
+                    <Button Text="Export to CSV"
+                            Command="{Binding ExportToCsvCommand}"
+                            BackgroundColor="#2196F3" />
+
+                    <Button Text="Export to Excel"
+                            Command="{Binding ExportToExcelCommand}"
+                            BackgroundColor="#4CAF50" />
+
+                    <Button Text="Export to PDF"
+                            Command="{Binding ExportToPdfCommand}"
+                            BackgroundColor="#FF9800" />
+
+                    <Label Text="{Binding LastExportPath, StringFormat='Last export: {0}'}"
+                           FontSize="12"
+                           IsVisible="{Binding LastExportPath, Converter={StaticResource IsNotNullConverter}}"
+                           TextColor="{AppThemeBinding Light=#666, Dark=#AAA}" />
+                </VerticalStackLayout>
+            </Frame>
+
+            <!-- Backup Section -->
+            <Frame Padding="20" BackgroundColor="{AppThemeBinding Light=#F5F5F5, Dark=#2C2C2C}">
+                <VerticalStackLayout Spacing="15">
+                    <Label Text="Backup &amp; Restore" FontSize="20" FontAttributes="Bold" />
+
+                    <Button Text="Create Backup"
+                            Command="{Binding CreateBackupCommand}"
+                            BackgroundColor="#9C27B0" />
+
+                    <Button Text="Restore from Backup"
+                            Command="{Binding RestoreBackupCommand}"
+                            BackgroundColor="#F44336" />
+
+                    <Label Text="{Binding LastBackupPath, StringFormat='Last backup: {0}'}"
+                           FontSize="12"
+                           IsVisible="{Binding LastBackupPath, Converter={StaticResource IsNotNullConverter}}"
+                           TextColor="{AppThemeBinding Light=#666, Dark=#AAA}" />
+                </VerticalStackLayout>
+            </Frame>
+
+        </VerticalStackLayout>
+    </ScrollView>
+
+</ContentPage>

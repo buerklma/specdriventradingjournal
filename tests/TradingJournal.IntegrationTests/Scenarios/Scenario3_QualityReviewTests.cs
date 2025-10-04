@@ -103,7 +103,7 @@ namespace TradingJournal.IntegrationTests.Scenarios
             // Create attachment metadata (simulating file upload)
             var testFileName = "test_screenshot.png";
             var testFilePath = Path.Combine(_testAttachmentsPath, testFileName);
-            
+
             var attachment = new Attachment
             {
                 Id = Guid.NewGuid(),
