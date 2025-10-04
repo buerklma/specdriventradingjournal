@@ -265,21 +265,21 @@
 ## Phase 3.9: Integration - Wiring & DI
 
 ### Dependency Injection
-- [ ] **T173** Configure dependency injection in `src/TradingJournal/MauiProgram.cs`: Register TradingDbContext as Scoped with SQLite connection string to %LOCALAPPDATA%\TradingJournal\tradingjour nal.db
-- [ ] **T174** Register services in MauiProgram.cs: AddScoped<ITradeService, TradeService>, AddScoped<IAnalyticsService, AnalyticsService>, AddScoped<IExportService, ExportService>
-- [ ] **T175** Register ViewModels in MauiProgram.cs: AddTransient<DashboardViewModel>, <TradesListViewModel>, <TradeDetailViewModel>, <NewTradeViewModel>, <AnalyticsViewModel>, <ExportViewModel>, <SettingsViewModel>
-- [ ] **T176** Register Views in MauiProgram.cs: AddTransient<DashboardView>, <TradesListView>, <TradeDetailView>, <NewTradeView>, <AnalyticsView>, <ExportView>, <SettingsView>
-- [ ] **T177** Add navigation routing in MauiProgram.cs: Register routes for all views using Routing.RegisterRoute
+- [x] **T173** Configure dependency injection in `src/TradingJournal/MauiProgram.cs`: Register TradingDbContext as Scoped with SQLite connection string to %LOCALAPPDATA%\TradingJournal\tradingjour nal.db
+- [x] **T174** Register services in MauiProgram.cs: AddScoped<ITradeService, TradeService>, AddScoped<IAnalyticsService, AnalyticsService>, AddScoped<IExportService, ExportService>
+- [x] **T175** Register ViewModels in MauiProgram.cs: AddTransient<DashboardViewModel>, <TradesListViewModel>, <TradeDetailViewModel>, <NewTradeViewModel>, <AnalyticsViewModel>, <ExportViewModel>, <SettingsViewModel>
+- [x] **T176** Register Views in MauiProgram.cs: AddTransient<DashboardView>, <TradesListView>, <TradeDetailView>, <NewTradeView>, <AnalyticsView>, <ExportView>, <SettingsView>
+- [x] **T177** Add navigation routing in MauiProgram.cs: Register routes for all views using Routing.RegisterRoute
 
 ### Navigation
-- [ ] **T178** Implement NavigateToTradeDetailCommand in TradesListViewModel: Use Shell.Current.GoToAsync with trade Id as query parameter
-- [ ] **T179** Implement QueryProperty attribute in TradeDetailViewModel to receive trade Id from navigation, call LoadTradeCommand in OnAppearing
-- [ ] **T180** Implement NavigateBackCommand in ViewModels: Use Shell.Current.GoToAsync("..")
-- [ ] **T181** Test navigation flow: Dashboard → Trades → Trade Detail → Edit → Back to list
+- [x] **T178** Implement NavigateToTradeDetailCommand in TradesListViewModel: Use Shell.Current.GoToAsync with trade Id as query parameter
+- [x] **T179** Implement QueryProperty attribute in TradeDetailViewModel to receive trade Id from navigation, call LoadTradeCommand in OnAppearing
+- [x] **T180** Implement NavigateBackCommand in ViewModels: Use Shell.Current.GoToAsync("..")
+- [x] **T181** Test navigation flow: Dashboard → Trades → Trade Detail → Edit → Back to list
 
 ### Database Initialization
-- [ ] **T182** Implement database initialization in `src/TradingJournal/App.xaml.cs` constructor: Ensure %LOCALAPPDATA%\TradingJournal\ directory exists, apply pending migrations using context.Database.MigrateAsync()
-- [ ] **T183** Add error handling for database initialization: Catch MigrationException, show alert dialog to user with error message, prevent app from starting if migration fails
+- [x] **T182** Implement database initialization in `src/TradingJournal/App.xaml.cs` constructor: Ensure %LOCALAPPDATA%\TradingJournal\ directory exists, apply pending migrations using context.Database.MigrateAsync()
+- [x] **T183** Add error handling for database initialization: Catch MigrationException, show alert dialog to user with error message, prevent app from starting if migration fails
 
 ---
 
