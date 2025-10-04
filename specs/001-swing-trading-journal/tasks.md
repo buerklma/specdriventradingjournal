@@ -119,18 +119,18 @@
 ## Phase 3.4: Tests First - Integration Tests (TDD) ⚠️ MUST COMPLETE BEFORE PHASE 3.5
 
 ### Quickstart Scenario Tests
-- [ ] **T077** [P] Integration test: `Scenario1_FirstTimeSetupTests.cs` in `tests/TradingJournal.IntegrationTests/Scenarios/` - Test create first trade workflow: NewTradeViewModel → TradeService.CreateTradeAsync → DB insert → verification
-- [ ] **T078** [P] Integration test: `Scenario2_PsychologyAndExitTests.cs` - Test add psychology notes → exit trade → calculated fields updated (RealizedRR, P/L, HoldingTime)
-- [ ] **T079** [P] Integration test: `Scenario3_QualityReviewTests.cs` - Test add quality rating → attach screenshot → verify attachment stored and retrievable
-- [ ] **T080** [P] Integration test: `Scenario4_AnalyticsTests.cs` - Test create 3 trades (2 wins, 1 loss) → analytics service returns correct win rate (~66.67%), total P/L, equity curve
-- [ ] **T081** [P] Integration test: `Scenario5_ExportBackupTests.cs` - Test export to CSV → verify file contents → create backup → verify ZIP contents
-- [ ] **T082** [P] Integration test: `Scenario6_ThemeAndShortcutsTests.cs` - Test theme switching (Light/Dark/System) → verify UserPreferences updated → keyboard shortcuts trigger correct ViewModels
+- [x] **T077** [P] Integration test: `Scenario1_FirstTimeSetupTests.cs` in `tests/TradingJournal.IntegrationTests/Scenarios/` - Test create first trade workflow: NewTradeViewModel → TradeService.CreateTradeAsync → DB insert → verification
+- [x] **T078** [P] Integration test: `Scenario2_PsychologyAndExitTests.cs` - Test add psychology notes → exit trade → calculated fields updated (RealizedRR, P/L, HoldingTime)
+- [x] **T079** [P] Integration test: `Scenario3_QualityReviewTests.cs` - Test add quality rating → attach screenshot → verify attachment stored and retrievable
+- [x] **T080** [P] Integration test: `Scenario4_AnalyticsTests.cs` - Test create 3 trades (2 wins, 1 loss) → analytics service returns correct win rate (~66.67%), total P/L, equity curve
+- [x] **T081** [P] Integration test: `Scenario5_ExportBackupTests.cs` - Test export to CSV → verify file contents → create backup → verify ZIP contents
+- [x] **T082** [P] Integration test: `Scenario6_ThemeAndShortcutsTests.cs` - Test theme switching (Light/Dark/System) → verify UserPreferences updated → keyboard shortcuts trigger correct ViewModels
 
 ### Workflow Tests
-- [ ] **T083** [P] Integration test: `FullTradeLifecycleTests.cs` - Test complete trade lifecycle: Create → Add psychology → Add adjustment → Exit → Add review → Attach screenshot → Export
-- [ ] **T084** [P] Integration test: `ConcurrentTradeCreationTests.cs` - Test multiple trades created simultaneously, verify no database locking issues, verify all trades persisted
-- [ ] **T085** [P] Integration test: `LargeDatasetPerformanceTests.cs` - Test create 1000 trades → analytics calculation < 2s, equity curve generation < 500ms, paging < 100ms per page
-- [ ] **T086** [P] Integration test: `BackupRestoreCycleTests.cs` - Test full cycle: Create trades → Create backup → Delete all data → Restore from backup → Verify all data restored
+- [x] **T083** [P] Integration test: `FullTradeLifecycleTests.cs` - Test complete trade lifecycle: Create → Add psychology → Add adjustment → Exit → Add review → Attach screenshot → Export
+- [x] **T084** [P] Integration test: `ConcurrentTradeCreationTests.cs` - Test multiple trades created simultaneously, verify no database locking issues, verify all trades persisted
+- [x] **T085** [P] Integration test: `LargeDatasetPerformanceTests.cs` - Test create 1000 trades → analytics calculation < 2s, equity curve generation < 500ms, paging < 100ms per page
+- [x] **T086** [P] Integration test: `BackupRestoreCycleTests.cs` - Test full cycle: Create trades → Create backup → Delete all data → Restore from backup → Verify all data restored
 
 ---
 
